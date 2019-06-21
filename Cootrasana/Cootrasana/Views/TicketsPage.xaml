@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cootrasana.Views.TicketsPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Tickets - Cootrasana">
+    <ContentPage.Content>
+        <StackLayout
+                BindingContext="{Binding Tickets}"
+                Padding="5">
+            <Grid HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Encomienda"></Label>
+                <Switch
+                   MinimumHeightRequest="5"
+                   MinimumWidthRequest="5"
+                   IsToggled="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+            </Grid>
+            <Picker x:Name="pickerOrigen"
+                Title="Seleccione un Origen">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>T. Sur</x:String>
+                        <x:String>T. Norte</x:String>
+                        <x:String>Heliconia</x:String>
+                        <x:String>San Antonio de prado</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Picker x:Name="pickerDestino"
+                Title="Seleccione un Destino">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>T. Sur</x:String>
+                        <x:String>T. Norte</x:String>
+                        <x:String>Heliconia</x:String>
+                        <x:String>San Antonio de prado</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <Label
+                Text="Número de personas">  
+            </Label>
+            <Stepper Minimum="-360"
+             Maximum="-180">
+            </Stepper>
+            <Entry
+                Keyboard="Numeric"
+                Placeholder="# Personas">
+            </Entry>
+            <Label
+                Text="Valor del ticket">
+            </Label>
+            <Entry
+                Keyboard="Numeric"
+                Placeholder="$14.000">
+            </Entry>
+            <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White"></Button>
+            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
