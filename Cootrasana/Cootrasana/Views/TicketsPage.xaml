@@ -22,17 +22,35 @@
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
             </Grid>
-            <Picker x:Name="pickerOrigen"
-                Title="Seleccione un Origen">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>T. Sur</x:String>
-                        <x:String>T. Norte</x:String>
-                        <x:String>Heliconia</x:String>
-                        <x:String>San Antonio de prado</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="
+                                      *"/>
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Image="ic_action_arrow_left"
+                    BackgroundColor="#00A14E"/>
+                <Picker 
+                    Grid.Column="1"
+                    x:Name="pickerOrigen"
+                    Title="Seleccione un Origen">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>T. Sur</x:String>
+                            <x:String>T. Norte</x:String>
+                            <x:String>Heliconia</x:String>
+                            <x:String>San Antonio de prado</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Button 
+                    Grid.Column="2"
+                    Image="ic_action_play_arrow"
+                    BackgroundColor="#00A14E"/>
+            </Grid>
             <Picker x:Name="pickerDestino"
                 Title="Seleccione un Destino">
                 <Picker.ItemsSource>
