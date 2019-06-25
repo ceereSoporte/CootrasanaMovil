@@ -17,7 +17,7 @@
                 <Label Text="Encomienda"></Label>
                 <Switch
                    MinimumHeightRequest="5"
-                   MinimumWidthRequest="5"
+                   MinimumWidthRequest="5"                   
                    IsToggled="True"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
@@ -37,6 +37,9 @@
                     Grid.Column="1"
                     x:Name="pickerOrigen"
                     Title="Seleccione un Origen">
+                    <!--ItemDisplayBinding="{Binding Description}"
+                    ItemsSource="{Binding Categories}"
+                    SelectedItem="{Binding Category}"-->
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>T. Sur</x:String>
@@ -53,6 +56,9 @@
             </Grid>
             <Picker x:Name="pickerDestino"
                 Title="Seleccione un Destino">
+                <!--ItemDisplayBinding="{Binding Description}"
+                    ItemsSource="{Binding Categories}"
+                    SelectedItem="{Binding Category}"-->
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>T. Sur</x:String>
@@ -65,22 +71,24 @@
             <Label
                 Text="Número de personas">  
             </Label>
-            <Stepper Minimum="-360"
+            <!--<Stepper Minimum="-360"
              Maximum="-180">
-            </Stepper>
+            </Stepper>-->
             <Entry
-                Keyboard="Numeric"
+                Keyboard="Numeric"                
                 Placeholder="# Personas">
+                <!--Text="{Binding NoPersonas}"-->
             </Entry>
             <Label
                 Text="Valor del ticket">
             </Label>
             <Entry
                 Keyboard="Numeric"
+                Text="{Binding ValTicket}"
                 Placeholder="$14.000">
             </Entry>
-            <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White"></Button>
-            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop"></Button>
+            <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White" Command="{Binding Alerta}"></Button>
+            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop" Command="{Binding Imprimir}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,6 +1,7 @@
 ﻿namespace Cootrasana.ViewModel
 {
-    public class TicketsViewModel
+    public class TicketsViewModel : BaseViewModel
     {
+
     }
 }
