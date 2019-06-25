@@ -37,7 +37,8 @@
                 <Picker 
                     Grid.Column="1"
                     x:Name="pickerOrigen"
-                    Title="Seleccione un Origen">
+                    Title="Selecci
+                    one un Origen">
                     <!--ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding Categories}"
                     SelectedItem="{Binding Category}"-->
@@ -97,8 +98,8 @@
             </Stepper>-->
             <Entry
                 Keyboard="Numeric"                
-                Placeholder="# Personas">
-                <!--Text="{Binding NoPersonas}"-->
+                Placeholder="# Personas"
+                Text="{Binding NoPersonas}">
             </Entry>
             <Label
                 Text="Valor del ticket">
@@ -109,7 +110,7 @@
                 Placeholder="$14.000">
             </Entry>
             <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White" Command="{Binding Alerta}"></Button>
-            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop" Command="{Binding Imprimir}"></Button>
+            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop" Command="{Binding PrintCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
