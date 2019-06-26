@@ -110,7 +110,14 @@
                 Placeholder="$14.000">
             </Entry>
             <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White" Command="{Binding Alerta}"></Button>
-            <Button BackgroundColor="#00A14E" Text="IMPRIMIR" TextColor="White" Image="ic_action_local_printshop" Command="{Binding PrintCommand}"></Button>
+            <Button 
+                BackgroundColor="#00A14E" 
+                Text="IMPRIMIR" 
+                TextColor="White" 
+                Image="ic_action_local_printshop" 
+                Command="{Binding PrintCommand}"
+                IsEnabled="{Binding IsEnable}">                
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
