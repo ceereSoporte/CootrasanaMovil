@@ -8,6 +8,10 @@
         <StackLayout
                 BindingContext="{Binding Tickets}"
                 Padding="10">
+            <Entry 
+                Text="{Binding Fecha}"
+                IsEnabled="False">                
+            </Entry>
             <Grid HorizontalOptions="Center"
                   VerticalOptions="Center">
                 <Grid.ColumnDefinitions>
@@ -70,7 +74,8 @@
                 </Picker.ItemsSource>
             </Picker>
             <Label
-                Text="Número de personas">
+                Text="Número de personas"
+                IsVisible="{Binding IsVisible}">
             </Label>
             <Grid 
                 IsVisible="{Binding IsVisible}">
@@ -101,13 +106,14 @@
             </Label>
             <Entry
                 Keyboard="Numeric"
-                Text="{Binding ValTicket, StringFormat='${0}'}"
-                IsEnabled="False">
+                Text="{Binding ValTicket}"
+                IsEnabled="{Binding IsEnableVal}">
             </Entry>
             <Button 
                 BackgroundColor="#F05050" 
                 Text="CREAR ALERTA" 
-                TextColor="White"                 
+                TextColor="White"  
+                IsVisible="{Binding IsVisibleAlert}"
                 Command="{Binding AlertCommand}">                
             </Button>
             <Button 

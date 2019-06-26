@@ -10,11 +10,14 @@ namespace Cootrasana.ViewModel
     public class TicketsViewModel : BaseViewModel
     {
         #region Attributes
+
         public bool isEnable;
         public bool isVisible;
+        public bool isVisibleAlert;
         public bool isToggled;
+        public bool isEnableVal;
         public int noPersonas;
-        public int valTicket;
+        public Double valTicket;
         public string destino;
         public string origen;
 
@@ -34,7 +37,15 @@ namespace Cootrasana.ViewModel
             set { this.SetValue(ref this.origen, value); }
         }
 
-        public int ValTicket
+        public DateTime Fecha
+        {
+            get
+            {
+                return DateTime.Now;
+            }
+        }
+
+        public Double ValTicket
         {
             get { return this.valTicket; }
             set { this.SetValue(ref this.valTicket, value); }
@@ -51,27 +62,44 @@ namespace Cootrasana.ViewModel
             get { return this.isEnable; }
             set { this.SetValue(ref this.isEnable, value); }
         }
-        //public string IsToggled
-        //{
-        //    get { return this.isToggled; }
-        //    set { this.SetValue(ref this.isToggled, value); }
-        //}
 
+        public bool IsEnableVal
+        {
+            get { return this.isEnableVal; }
+            set { this.SetValue(ref this.isEnableVal, value); }
+        }
+
+        public bool IsVisibleAlert
+        {
+            get { return this.isVisibleAlert; }
+            set { this.SetValue(ref this.isVisibleAlert, value); }
+        }
         public bool IsToggled
         {
             get { return this.isToggled; }
+
             set
             {
                 isToggled = value;
-                OnPropertyChanged(nameof(IsToggled2));
-            }
-        }
+                if (isToggled == true)
+                {
+                    IsVisible = false;
+                    IsVisibleAlert = false;
+                    this.ValTicket = 0;
+                    NoPersonas = 0;
+                    IsEnableVal = true;
 
-        public void IsToggled2()
-        {
-            if (IsToggled == true)
-            {
-               IsVisible = false;
+                }
+                else if (isToggled == false)
+                {
+                    IsVisible = true;
+                    IsVisibleAlert = true;
+                    ValTicket = 0;
+                    NoPersonas = 0;
+                    IsEnableVal = false;
+
+                }
+                OnPropertyChanged(nameof(IsToggled));
             }
         }
 
@@ -83,20 +111,21 @@ namespace Cootrasana.ViewModel
 
         #endregion
 
-
         #region Constructor
 
         public TicketsViewModel()
         {
             this.IsEnable = true;
+            this.IsEnableVal = true;
             this.IsToggled = false;
-            this.IsVisible = false;
+            this.IsVisible = true;
+            this.IsVisibleAlert = true;
             this.NoPersonas = 0;
             this.ValTicket = 0;
         }
         #endregion
 
-        
+        #region Command
 
         public ICommand PrintCommand
         {
@@ -109,10 +138,42 @@ namespace Cootrasana.ViewModel
 
         private async void Print()
         {
-            await App.Current.MainPage.DisplayAlert(
-                "Imprimir",
-                "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas  + "\n" + "Valor de Tickets: " + ValTicket,
-                "OK");
+            if (IsToggled == false)
+            {
+                if (Destino == "" || Origen == "" || NoPersonas <= 0)
+                {
+                    await App.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "Debes llenar todos los campos",
+                    "OK");
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert(
+                    "Imprimir",
+                    "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas + "\n" + "Valor de Tickets: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
+                    "OK");
+                }
+            }
+            else
+            {
+                if (Destino == "" || Origen == "" || ValTicket <= 0)
+                {
+                    await App.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "Debes llenar todos los campos",
+                    "OK");
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert(
+                    "Imprimir",
+                    "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
+                    "OK");
+                }
+
+            }
+            
         }
 
         public ICommand AlertCommand
@@ -162,6 +223,8 @@ namespace Cootrasana.ViewModel
            NoPersonas = NoPersonas + 1;
            ValTicket = NoPersonas * 14000;
         }
+
+        #endregion
 
     }
 }
