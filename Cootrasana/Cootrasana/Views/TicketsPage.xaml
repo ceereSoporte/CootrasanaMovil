@@ -18,7 +18,7 @@
                 <Switch
                    MinimumHeightRequest="5"
                    MinimumWidthRequest="5"                   
-                   IsToggled="True"
+                   IsToggled="{Binding IsToggled}"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
             </Grid>
@@ -26,19 +26,17 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="
-                                      *"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button
-                    Grid.Column="0"
-                    
+                    Grid.Column="0"                    
                     Image="ic_action_arrow_left"
                     BackgroundColor="#00A14E"/>
                 <Picker 
                     Grid.Column="1"
                     x:Name="pickerOrigen"
-                    Title="Selecci
-                    one un Origen">
+                    Title="Seleccione un Origen"
+                    SelectedItem="{Binding Origen}">
                     <!--ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding Categories}"
                     SelectedItem="{Binding Category}"-->
@@ -57,7 +55,8 @@
                     BackgroundColor="#00A14E"/>
             </Grid>
             <Picker x:Name="pickerDestino"
-                Title="Seleccione un Destino">
+                Title="Seleccione un Destino"
+                SelectedItem="{Binding Destino}">
                 <!--ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding Categories}"
                     SelectedItem="{Binding Category}"-->
@@ -73,7 +72,8 @@
             <Label
                 Text="Número de personas">
             </Label>
-            <Grid>
+            <Grid 
+                IsVisible="{Binding IsVisible}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
@@ -82,34 +82,34 @@
                 <Button 
                     Grid.Column="0"
                     Image="ic_action__"
-                    BackgroundColor="#00A14E"/>
+                    BackgroundColor="#00A14E"
+                    Command="{Binding RigthCommand}"/>
                 <Entry
                     Grid.Column="1"
                     Keyboard="Numeric"
+                    Text="{Binding NoPersonas}"
                     Placeholder="# Personas">
                 </Entry>
                 <Button 
                     Grid.Column="2"
                     Image="ic_action_add_box"
-                    BackgroundColor="#00A14E"/>
+                    BackgroundColor="#00A14E"
+                    Command="{Binding LeftCommand}"/>
             </Grid>
-            <!--<Stepper Minimum="-360"
-             Maximum="-180">
-            </Stepper>-->
-            <Entry
-                Keyboard="Numeric"                
-                Placeholder="# Personas"
-                Text="{Binding NoPersonas}">
-            </Entry>
             <Label
                 Text="Valor del ticket">
             </Label>
             <Entry
                 Keyboard="Numeric"
-                Text="{Binding ValTicket}"
-                Placeholder="$14.000">
+                Text="{Binding ValTicket, StringFormat='${0}'}"
+                IsEnabled="False">
             </Entry>
-            <Button BackgroundColor="#F05050" Text="CREAR ALERTA" TextColor="White" Command="{Binding Alerta}"></Button>
+            <Button 
+                BackgroundColor="#F05050" 
+                Text="CREAR ALERTA" 
+                TextColor="White"                 
+                Command="{Binding AlertCommand}">                
+            </Button>
             <Button 
                 BackgroundColor="#00A14E" 
                 Text="IMPRIMIR" 
