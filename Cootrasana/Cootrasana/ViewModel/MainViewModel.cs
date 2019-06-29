@@ -7,10 +7,11 @@ namespace Cootrasana.ViewModel
     public class MainViewModel
     {
         public TicketsViewModel Tickets { get; set; }
+        public LoginViewModel Login { get; set; }
 
         public MainViewModel()
         {
-            this.Tickets = new TicketsViewModel();
+            this.Login = new LoginViewModel();
         }
     }
 }
