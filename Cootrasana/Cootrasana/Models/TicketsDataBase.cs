@@ -7,25 +7,25 @@ using Xamarin.Forms;
 
 namespace Cootrasana.Models
 {
-    public class CRUD
+    public class TicketsDataBase
     {
         private SQLiteConnection conn;
 
         //CREATE  
-        public CRUD()
+        public TicketsDataBase()
         {
             conn = DependencyService.Get<ConectionSQLite>().GetConnection();
-            conn.CreateTable<Tickets>();
+            conn.CreateTable<TicketsModel>();
         }
 
         //READ  
-        public IEnumerable<Tickets> GetMembers()
+        public IEnumerable<TicketsModel> GetMembers()
         {
-            var members = (from mem in conn.Table<Tickets>() select mem);
+            var members = (from mem in conn.Table<TicketsModel>() select mem);
             return members.ToList();
         }
         //INSERT  
-        public string AddMember(Tickets tickets)
+        public string AddMember(TicketsModel tickets)
         {
             conn.Insert(tickets);
             return "success";
@@ -33,7 +33,7 @@ namespace Cootrasana.Models
         //DELETE  
         public string DeleteMember(int id)
         {
-            conn.Delete<Tickets>(id);
+            conn.Delete<TicketsModel>(id);
             return "success";
         }
     }

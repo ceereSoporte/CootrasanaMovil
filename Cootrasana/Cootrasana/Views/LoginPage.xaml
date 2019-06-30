@@ -32,6 +32,7 @@
                         Grid.Column="1"
                         Keyboard="Email"
                         TextColor="Black"
+                        Text="{Binding Usuario}"
                         Placeholder="correo@correo.com">
                     </Entry>
                     <Label
@@ -47,6 +48,7 @@
                         Grid.Column="1"
                         IsPassword="true"
                         TextColor="Black"
+                        Text="{Binding Clave}"
                         Placeholder="Contraseña">
                     </Entry>
                 </Grid>

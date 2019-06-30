@@ -2,6 +2,7 @@
 
 namespace Cootrasana.ViewModel
 {
+    using Cootrasana.Models;
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System.Windows.Input;
@@ -11,11 +12,16 @@ namespace Cootrasana.ViewModel
     {
         #region Attributes
 
+        public LoginDataBase crud;
+        public LoginModel login;
+
         #endregion
 
         #region Properties
 
         public TicketsViewModel Tickets { get; set; }
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
 
         #endregion
 
@@ -40,10 +46,7 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
-            await App.Current.MainPage.DisplayAlert(
-                "Logueo",
-                "Acá se loguea",
-                "OK");
+            await Application.Current.MainPage.Navigation.PushAsync(new List());
         }
 
         public ICommand RegisterCommand
@@ -54,10 +57,15 @@ namespace Cootrasana.ViewModel
             }
         }
 
-        private async void Register()
+        private void Register()
         {
+            login = new LoginModel();
+            crud = new LoginDataBase();
+            login.Usuario = Usuario;
+            login.Clave = Clave;
+            crud.AddMember(login);
+            //await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
             
-            await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
         }
 
         #endregion

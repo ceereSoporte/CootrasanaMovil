@@ -3,6 +3,7 @@
 namespace Cootrasana.ViewModel
 {
     using Cootrasana.Models;
+    using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System;
     using System.Windows.Input;
@@ -12,7 +13,8 @@ namespace Cootrasana.ViewModel
     {
         #region Attributes
 
-        private CRUD crud;
+        public TicketsDataBase TicketsModel;
+        public TicketsModel Tickets;
         public bool isEnable;
         public bool isVisible;
         public bool isVisibleAlert;
@@ -151,30 +153,38 @@ namespace Cootrasana.ViewModel
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert(
-                    "Imprimir",
-                    "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas + "\n" + "Valor de Tickets: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
-                    "OK");
+                    Tickets = new TicketsModel();
+                    TicketsModel = new TicketsDataBase();
+                    Tickets.Origen = Origen;
+                    Tickets.Destino = Destino;
+                    Tickets.NoPersonas = NoPersonas;
+                    Tickets.ValTicket = ValTicket;
+                    Tickets.Fecha = Fecha;
+                    TicketsModel.AddMember(Tickets);
+                    //await App.Current.MainPage.DisplayAlert(
+                    //"Imprimir",
+                    //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas + "\n" + "Valor de Tickets: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
+                    //"OK");
                 }
             }
-            else
-            {
-                if (Destino == "" || Origen == "" || ValTicket <= 0)
-                {
-                    await App.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "Debes llenar todos los campos",
-                    "OK");
-                }
-                else
-                {
-                    await App.Current.MainPage.DisplayAlert(
-                    "Imprimir",
-                    "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
-                    "OK");
-                }
+            //else
+            //{
+            //    if (Destino == "" || Origen == "" || ValTicket <= 0)
+            //    {
+            //        await App.Current.MainPage.DisplayAlert(
+            //        "Error",
+            //        "Debes llenar todos los campos",
+            //        "OK");
+            //    }
+            //    else
+            //    {
+            //        await App.Current.MainPage.DisplayAlert(
+            //        "Imprimir",
+            //        "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
+            //        "OK");
+            //    }
 
-            }
+            //}
             
         }
 
@@ -188,7 +198,8 @@ namespace Cootrasana.ViewModel
 
         private async void Alert()
         {
-            await App.Current.MainPage.DisplayAlert("Alerta", "Acá va la alerta del ticket", "OK");
+            await Application.Current.MainPage.Navigation.PushAsync(new List());
+            //await App.Current.MainPage.DisplayAlert("Alerta", "Acá va la alerta del ticket", "OK");
         }
 
         public ICommand RigthCommand

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cootrasana.Views.List">
+    <ContentPage.Content>
+        <ListView x:Name="listMembers" ItemTapped="OnSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Spacing="4">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Origen: "  FontSize="16"/>
+                                <Label x:Name="Origen"  
+                       Text="{Binding Origen}"  
+                       FontSize="16"  
+                       TextColor="Red"/>
+                                <Label Text="Detino: "  FontSize="16"/>
+                                <Label x:Name="Detino"  
+                       Text="{Binding Destino}"  
+                       FontSize="16"  
+                       TextColor="Red"/>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="NoPersonas: "  FontSize="16"/>
+                                <Label x:Name="NoPersonas"  
+                       Text="{Binding NoPersonas}"  
+                       FontSize="16"  
+                       TextColor="Red"/>
+                                <Label Text="ValTickets: "  FontSize="16"/>
+                                <Label x:Name="ValTicket"  
+                       Text="{Binding ValTicket}"  
+                       FontSize="16"  
+                       TextColor="Red"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

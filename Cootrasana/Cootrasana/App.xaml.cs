@@ -11,7 +11,7 @@ namespace Cootrasana
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new NavigationPage(new TicketsPage());
         }
 
         protected override void OnStart()
