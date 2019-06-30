@@ -5,6 +5,7 @@ namespace Cootrasana.ViewModel
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System.Windows.Input;
+    using Xamarin.Forms;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -12,16 +13,23 @@ namespace Cootrasana.ViewModel
 
         #endregion
 
+        #region Properties
+
+        public TicketsViewModel Tickets { get; set; }
+
+        #endregion
+
         #region Constructor
         public LoginViewModel()
         {
-
+            this.Tickets = new TicketsViewModel();
         }
         #endregion
 
-        #region Command
 
-        private ICommand LoginCommand
+
+        #region Command
+        public ICommand LoginCommand
         {
             get
             {
@@ -29,7 +37,8 @@ namespace Cootrasana.ViewModel
             }
         }
 
-        public async void Login()
+
+        private async void Login()
         {
             await App.Current.MainPage.DisplayAlert(
                 "Logueo",
@@ -37,7 +46,7 @@ namespace Cootrasana.ViewModel
                 "OK");
         }
 
-        private ICommand RegisterCommand
+        public ICommand RegisterCommand
         {
             get
             {
@@ -47,9 +56,8 @@ namespace Cootrasana.ViewModel
 
         private async void Register()
         {
-            await App.Current.MainPage.DisplayAlert("Registro","Acá va el registro","OK");
-
-            await App.Current.MainPage.Navigation.PushAsync(new TicketsPage());
+            
+            await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
         }
 
         #endregion

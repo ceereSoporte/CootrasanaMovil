@@ -2,6 +2,7 @@
 
 namespace Cootrasana.ViewModel
 {
+    using Cootrasana.Models;
     using GalaSoft.MvvmLight.Command;
     using System;
     using System.Windows.Input;
@@ -11,6 +12,7 @@ namespace Cootrasana.ViewModel
     {
         #region Attributes
 
+        private CRUD crud;
         public bool isEnable;
         public bool isVisible;
         public bool isVisibleAlert;
