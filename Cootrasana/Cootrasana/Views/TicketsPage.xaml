@@ -109,21 +109,23 @@
                 Text="{Binding ValTicket}"
                 IsEnabled="{Binding IsEnableVal}">
             </Entry>
+            <StackLayout>
             <Button 
                 BackgroundColor="#F05050" 
-                Text="CREAR ALERTA" 
+                Text="Visualizar" 
                 TextColor="White"  
                 IsVisible="{Binding IsVisibleAlert}"
                 Command="{Binding AlertCommand}">                
             </Button>
             <Button 
                 BackgroundColor="#00A14E" 
-                Text="IMPRIMIR" 
+                Text="Guardar" 
                 TextColor="White" 
                 Image="ic_action_local_printshop" 
                 Command="{Binding PrintCommand}"
                 IsEnabled="{Binding IsEnable}">                
             </Button>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

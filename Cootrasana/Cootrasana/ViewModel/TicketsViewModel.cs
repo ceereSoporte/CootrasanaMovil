@@ -157,9 +157,10 @@ namespace Cootrasana.ViewModel
                     TicketsModel = new TicketsDataBase();
                     Tickets.Origen = Origen;
                     Tickets.Destino = Destino;
-                    Tickets.NoPersonas = NoPersonas;
                     Tickets.ValTicket = ValTicket;
+                    Tickets.NoPersonas = NoPersonas;
                     Tickets.Fecha = Fecha;
+                    Tickets.Encomienda = isToggled;
                     TicketsModel.AddMember(Tickets);
                     //await App.Current.MainPage.DisplayAlert(
                     //"Imprimir",
@@ -167,25 +168,45 @@ namespace Cootrasana.ViewModel
                     //"OK");
                 }
             }
-            //else
-            //{
-            //    if (Destino == "" || Origen == "" || ValTicket <= 0)
-            //    {
-            //        await App.Current.MainPage.DisplayAlert(
-            //        "Error",
-            //        "Debes llenar todos los campos",
-            //        "OK");
-            //    }
-            //    else
-            //    {
-            //        await App.Current.MainPage.DisplayAlert(
-            //        "Imprimir",
-            //        "Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
-            //        "OK");
-            //    }
 
-            //}
-            
+            else
+            {
+                if (Destino == "" || Origen == "" || ValTicket <= 0)
+                {
+                    //await App.Current.MainPage.DisplayAlert(
+                    //"Error",
+                    //"Debes llenar todos los campos",
+                    //"OK");
+                }
+                else
+                {
+                    Tickets = new TicketsModel();
+                    TicketsModel = new TicketsDataBase();
+                    Tickets.Origen = Origen;
+                    Tickets.Destino = Destino;
+                    Tickets.ValTicket = ValTicket;
+                    Tickets.Fecha = Fecha;
+                    Tickets.Encomienda = isToggled;
+                    TicketsModel.AddMember(Tickets);
+                    //await App.Current.MainPage.DisplayAlert(
+                    //"Imprimir",
+                    //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
+                    //"OK");
+                }
+
+            }
+
+            ClearControll();
+
+
+        }
+
+        public void ClearControll()
+        {
+            NoPersonas = 0;
+            Origen = "";
+            Destino = "";
+            ValTicket = 0;
         }
 
         public ICommand AlertCommand

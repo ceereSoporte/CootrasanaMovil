@@ -46,7 +46,8 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new List());
+            login = new LoginModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
         }
 
         public ICommand RegisterCommand
@@ -57,13 +58,13 @@ namespace Cootrasana.ViewModel
             }
         }
 
-        private void Register()
+        private async void Register()
         {
-            login = new LoginModel();
-            crud = new LoginDataBase();
-            login.Usuario = Usuario;
-            login.Clave = Clave;
-            crud.AddMember(login);
+            //login = new LoginModel();
+            ////crud = new LoginDataBase();
+            ////login.Usuario = Usuario;
+            ////login.Clave = Clave;
+            ////crud.AddMember(login);
             //await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
             
         }
