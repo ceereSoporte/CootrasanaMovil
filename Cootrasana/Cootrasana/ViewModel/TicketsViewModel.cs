@@ -188,6 +188,7 @@ namespace Cootrasana.ViewModel
                     Tickets.Fecha = Fecha;
                     Tickets.Encomienda = isToggled;
                     TicketsModel.AddMember(Tickets);
+                    ClearControll();
                     //await App.Current.MainPage.DisplayAlert(
                     //"Imprimir",
                     //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
@@ -195,10 +196,6 @@ namespace Cootrasana.ViewModel
                 }
 
             }
-
-            ClearControll();
-
-
         }
 
         public void ClearControll()

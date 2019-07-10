@@ -32,6 +32,14 @@ namespace Cootrasana.ViewModel
         }
         #endregion
 
+        #region Singleton
+        private static TicketsViewModel instance;
+
+        public static TicketsViewModel GetInstance()
+        {
+            return instance;
+        }
+        #endregion
 
 
         #region Command
@@ -46,7 +54,7 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
-            login = new LoginModel();
+            MainViewModel.GetInstance().Tickets = new TicketsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
         }
 

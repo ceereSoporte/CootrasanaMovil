@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cootrasana", "Cootrasana\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cootrasana.Android", "Cootrasana\Cootrasana.Android\Cootrasana.Android.csproj", "{DC6F3111-42E1-4F3D-A3F3-F6F99F64DD05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cootrasana.Domain", "Cootrasana.Domain\Cootrasana.Domain.csproj", "{6F473B44-5F03-4108-B559-4529B7E8ED4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cootrasana.Common", "Cootrasana.Common\Cootrasana.Common.csproj", "{92AA5657-1ECA-4462-8748-F05C71F1D2FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cootrasana.API", "Cootrasana.API\Cootrasana.API.csproj", "{98FECE1C-AA6F-46C4-AE5F-96AAF55D555F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +31,18 @@ Global
 		{DC6F3111-42E1-4F3D-A3F3-F6F99F64DD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC6F3111-42E1-4F3D-A3F3-F6F99F64DD05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DC6F3111-42E1-4F3D-A3F3-F6F99F64DD05}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6F473B44-5F03-4108-B559-4529B7E8ED4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F473B44-5F03-4108-B559-4529B7E8ED4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F473B44-5F03-4108-B559-4529B7E8ED4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F473B44-5F03-4108-B559-4529B7E8ED4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92AA5657-1ECA-4462-8748-F05C71F1D2FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92AA5657-1ECA-4462-8748-F05C71F1D2FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92AA5657-1ECA-4462-8748-F05C71F1D2FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92AA5657-1ECA-4462-8748-F05C71F1D2FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98FECE1C-AA6F-46C4-AE5F-96AAF55D555F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98FECE1C-AA6F-46C4-AE5F-96AAF55D555F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98FECE1C-AA6F-46C4-AE5F-96AAF55D555F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98FECE1C-AA6F-46C4-AE5F-96AAF55D555F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

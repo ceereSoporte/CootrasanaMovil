@@ -7,10 +7,26 @@ namespace Cootrasana.ViewModel
     public class MainViewModel
     {
         public TicketsViewModel Tickets { get; set; }
+        public LoginViewModel Login { get; set; }
 
         public MainViewModel()
         {
-            this.Tickets = new TicketsViewModel();
+            instance = this;
+            this.Login = new LoginViewModel();
         }
+
+        #region Singleton
+        private static MainViewModel instance;
+
+        public static MainViewModel GetInstance()
+        {
+            if (instance == null)
+            {
+                return new MainViewModel();
+            }
+
+            return instance;
+        }
+        #endregion
     }
 }

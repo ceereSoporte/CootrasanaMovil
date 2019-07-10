@@ -5,45 +5,60 @@
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
              Title="Tickets - Cootrasana">
     <ContentPage.Content>
-        <StackLayout
-                BindingContext="{Binding Tickets}"
-                Padding="10">
-            <Entry 
-                Text="{Binding Fecha}"
-                IsEnabled="False">                
-            </Entry>
-            <Grid HorizontalOptions="Center"
-                  VerticalOptions="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Text="Encomienda"></Label>
-                <Switch
-                   MinimumHeightRequest="5"
-                   MinimumWidthRequest="5"                   
-                   IsToggled="{Binding IsToggled}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button
-                    Grid.Column="0"                    
-                    Image="ic_action_arrow_left"
-                    BackgroundColor="#00A14E"/>
-                <Picker 
-                    Grid.Column="1"
-                    x:Name="pickerOrigen"
-                    Title="Seleccione un Origen"
-                    SelectedItem="{Binding Origen}">
-                    <!--ItemDisplayBinding="{Binding Description}"
-                    ItemsSource="{Binding Categories}"
-                    SelectedItem="{Binding Category}"-->
+        <ScrollView
+            BindingContext="{Binding Tickets}">
+            <StackLayout
+                    Padding="10">
+                <Entry 
+                    Text="{Binding Fecha}"
+                    IsEnabled="False">
+                </Entry>
+                <Grid HorizontalOptions="Center"
+                      VerticalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Encomienda"></Label>
+                    <Switch
+                       MinimumHeightRequest="5"
+                       MinimumWidthRequest="5"                   
+                       IsToggled="{Binding IsToggled}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"                    
+                        Image="ic_action_arrow_left"
+                        BackgroundColor="#00A14E"/>
+                    <Picker 
+                        Grid.Column="1"
+                        x:Name="pickerOrigen"
+                        Title="Seleccione un Origen"
+                        SelectedItem="{Binding Origen}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>T. Sur</x:String>
+                                <x:String>T. Norte</x:String>
+                                <x:String>Heliconia</x:String>
+                                <x:String>San Antonio de prado</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    <Button 
+                        Grid.Column="2"
+                        Image="ic_action_play_arrow"
+                        BackgroundColor="#00A14E"/>
+                </Grid>
+                <Picker x:Name="pickerDestino"
+                    Title="Seleccione un Destino"
+                    SelectedItem="{Binding Destino}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>T. Sur</x:String>
@@ -53,79 +68,74 @@
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
-                <Button 
-                    Grid.Column="2"
-                    Image="ic_action_play_arrow"
-                    BackgroundColor="#00A14E"/>
-            </Grid>
-            <Picker x:Name="pickerDestino"
-                Title="Seleccione un Destino"
-                SelectedItem="{Binding Destino}">
-                <!--ItemDisplayBinding="{Binding Description}"
-                    ItemsSource="{Binding Categories}"
-                    SelectedItem="{Binding Category}"-->
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>T. Sur</x:String>
-                        <x:String>T. Norte</x:String>
-                        <x:String>Heliconia</x:String>
-                        <x:String>San Antonio de prado</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-            <Label
-                Text="Número de personas"
-                IsVisible="{Binding IsVisible}">
-            </Label>
-            <Grid 
-                IsVisible="{Binding IsVisible}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button 
-                    Grid.Column="0"
-                    Image="ic_action__"
-                    BackgroundColor="#00A14E"
-                    Command="{Binding RigthCommand}"/>
+                <Label
+                    Text="Número de personas"
+                    IsVisible="{Binding IsVisible}">
+                </Label>
+                <Grid 
+                    IsVisible="{Binding IsVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button 
+                        Grid.Column="0"
+                        Image="ic_action__"
+                        BackgroundColor="#00A14E"
+                        Command="{Binding RigthCommand}"/>
+                    <Entry
+                        Grid.Column="1"
+                        Keyboard="Numeric"
+                        Text="{Binding NoPersonas}"
+                        Placeholder="# Personas">
+                    </Entry>
+                    <Button 
+                        Grid.Column="2"
+                        Image="ic_action_add_box"
+                        BackgroundColor="#00A14E"
+                        Command="{Binding LeftCommand}"/>
+                </Grid>
+                <Label
+                    Text="Valor del ticket"
+                    HorizontalOptions="FillAndExpand">
+                </Label>
                 <Entry
-                    Grid.Column="1"
                     Keyboard="Numeric"
-                    Text="{Binding NoPersonas}"
-                    Placeholder="# Personas">
+                    Text="{Binding ValTicket}"
+                    IsEnabled="{Binding IsEnableVal}"
+                    HorizontalOptions="FillAndExpand">
                 </Entry>
-                <Button 
-                    Grid.Column="2"
-                    Image="ic_action_add_box"
-                    BackgroundColor="#00A14E"
-                    Command="{Binding LeftCommand}"/>
-            </Grid>
-            <Label
-                Text="Valor del ticket">
-            </Label>
-            <Entry
-                Keyboard="Numeric"
-                Text="{Binding ValTicket}"
-                IsEnabled="{Binding IsEnableVal}">
-            </Entry>
-            <StackLayout>
-            <Button 
-                BackgroundColor="#F05050" 
-                Text="Visualizar" 
-                TextColor="White"  
-                IsVisible="{Binding IsVisibleAlert}"
-                Command="{Binding AlertCommand}">                
-            </Button>
-            <Button 
-                BackgroundColor="#00A14E" 
-                Text="Guardar" 
-                TextColor="White" 
-                Image="ic_action_local_printshop" 
-                Command="{Binding PrintCommand}"
-                IsEnabled="{Binding IsEnable}">                
-            </Button>
+                <StackLayout
+                        Margin="20,0"
+                        Orientation="Horizontal"
+                        VerticalOptions="CenterAndExpand">
+                    <Button 
+                    BackgroundColor="#F05050"
+                    BorderRadius="23"
+                    Text="Visualizar" 
+                    TextColor="White"  
+                    Font="Bold"
+                    Image="ic_action_add_alert"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="{Binding IsVisibleAlert}"
+                    Command="{Binding AlertCommand}">
+                    </Button>
+                    <Button 
+                    BackgroundColor="#00A14E" 
+                    BorderRadius="23"
+                    Text="Guardar" 
+                    TextColor="White" 
+                    Font="Bold"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    Image="ic_action_local_printshop" 
+                    Command="{Binding PrintCommand}"
+                    IsEnabled="{Binding IsEnable}">
+                    </Button>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
