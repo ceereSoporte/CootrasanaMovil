@@ -1,12 +1,15 @@
-﻿namespace Cootrasana.Common.Models
+﻿
+
+namespace Cootrasana.Common.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Tickets
+    public class Tickets_Movil
     {
+        
         [Key]
-        public int idTicket { get; set; }
+        public int idTickets { get; set; }
 
         [Required]
         public string Origen { get; set; }
@@ -18,12 +21,11 @@
         public int NoPersonas { get; set; }
 
         [Required]
-        public Decimal ValTicket { get; set; }
+        public Decimal ValTickets { get; set; }
 
         [Required]
         public bool Encomienda { get; set; }
 
-        [Required]
         public DateTime Fecha { get; set; }
     }
 }
