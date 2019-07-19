@@ -23,6 +23,19 @@ namespace Cootrasana.Models
             var members = (from mem in conn.Table<LoginModel>() select mem);
             return members.ToList();
         }
+        public bool GetMemberLogin(string name, string password)
+        {
+            var member = (from mem in conn.Table<LoginModel>() where mem.name == name && mem.Password == password select mem);
+            var lis = member.ToList();
+            if (lis.Count != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         //INSERT  
         public string AddMember(LoginModel login)
         {
@@ -33,6 +46,12 @@ namespace Cootrasana.Models
         public string DeleteMember(int id)
         {
             conn.Delete<LoginModel>(id);
+            return "success";
+        }
+        //DELETE DATOS
+        public string DeleteTable()
+        {
+            conn.DeleteAll<LoginModel>();
             return "success";
         }
     }

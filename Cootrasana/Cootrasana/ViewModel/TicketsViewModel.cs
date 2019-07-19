@@ -3,6 +3,7 @@
 namespace Cootrasana.ViewModel
 {
     using Cootrasana.Models;
+    using Cootrasana.Services;
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System;
@@ -13,17 +14,19 @@ namespace Cootrasana.ViewModel
     {
         #region Attributes
 
-        public TicketsDataBase TicketsModel;
-        public TicketsModel Tickets;
-        public bool isEnable;
-        public bool isVisible;
-        public bool isVisibleAlert;
-        public bool isToggled;
-        public bool isEnableVal;
-        public int noPersonas;
-        public Double valTicket;
-        public string destino;
-        public string origen;
+        private TicketsDataBase TicketsModel;
+        private TicketsModel Tickets;
+        private bool isEnable;
+        private bool isVisible;
+        private bool isVisibleAlert;
+        private bool isToggled;
+        private bool isEnableVal;
+        private int noPersonas;
+        private Double valTicket;
+        private string destino;
+        private string origen;
+        private ApiService apiService;
+
 
         #endregion
 
@@ -126,6 +129,7 @@ namespace Cootrasana.ViewModel
             this.IsVisibleAlert = true;
             this.NoPersonas = 0;
             this.ValTicket = 0;
+            this.apiService = new ApiService();
         }
         #endregion
 
@@ -142,6 +146,15 @@ namespace Cootrasana.ViewModel
 
         private async void Print()
         {
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                return;
+            }
+
+
+
             if (IsToggled == false)
             {
                 if (Destino == "" || Origen == "" || NoPersonas <= 0)
@@ -162,6 +175,7 @@ namespace Cootrasana.ViewModel
                     Tickets.Fecha = Fecha;
                     Tickets.Encomienda = isToggled;
                     TicketsModel.AddMember(Tickets);
+                    ClearControll();
                     //await App.Current.MainPage.DisplayAlert(
                     //"Imprimir",
                     //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas + "\n" + "Valor de Tickets: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
@@ -173,10 +187,10 @@ namespace Cootrasana.ViewModel
             {
                 if (Destino == "" || Origen == "" || ValTicket <= 0)
                 {
-                    //await App.Current.MainPage.DisplayAlert(
-                    //"Error",
-                    //"Debes llenar todos los campos",
-                    //"OK");
+                    await App.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "Debes llenar todos los campos",
+                    "OK");
                 }
                 else
                 {
@@ -204,6 +218,20 @@ namespace Cootrasana.ViewModel
             Origen = "";
             Destino = "";
             ValTicket = 0;
+        }
+
+        public ICommand ClearCampos
+        {
+            get
+            {
+                return new RelayCommand(EliminarDatos);
+            }
+        }
+
+        private void EliminarDatos()
+        {
+            TicketsModel = new TicketsDataBase();
+            TicketsModel.DeleteTable();
         }
 
         public ICommand AlertCommand

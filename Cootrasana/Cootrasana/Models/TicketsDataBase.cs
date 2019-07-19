@@ -36,6 +36,13 @@ namespace Cootrasana.Models
             conn.Delete<TicketsModel>(id);
             return "success";
         }
+
+        public string DeleteTable()
+        {
+            conn.DeleteAll<TicketsModel>();
+            return "success";
+            
+        }
     }
 }
 

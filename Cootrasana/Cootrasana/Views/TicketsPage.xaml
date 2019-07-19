@@ -134,6 +134,18 @@
                     Command="{Binding PrintCommand}"
                     IsEnabled="{Binding IsEnable}">
                     </Button>
+                    <Button 
+                    BackgroundColor="#F05050"
+                    BorderRadius="23"
+                    Text="Eliminar" 
+                    TextColor="White"  
+                    Font="Bold"
+                    Image="ic_action_add_alert"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="{Binding IsVisibleAlert}"
+                    Command="{Binding ClearCampos}">
+                    </Button>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

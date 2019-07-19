@@ -8,7 +8,11 @@
             <!---Locator-->
             <infra:InstanceLocator x:Key="Locator"/>
 
-            <x:String x:Key="Cootrasana.mssql.somee.com"></x:String>
+            <!-- Parameters -->
+            <x:String x:Key="UrlAPI">http://192.168.1.17:8000</x:String>
+            <x:String x:Key="UrlPrefix">/api</x:String>
+            <x:String x:Key="UrlUserController">/users</x:String>
+            <x:String x:Key="UrlPassController">/users/verify</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
