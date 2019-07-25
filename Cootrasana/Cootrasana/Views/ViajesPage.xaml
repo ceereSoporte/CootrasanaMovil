@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cootrasana.Views.ViajesPage"
+             Title="Viajes"
+              BindingContext="{Binding Main, Source={StaticResource Locator}}">
+    <ContentPage.Content>
+        <ScrollView
+            BindingContext="{Binding Viajes}">
+            <StackLayout>
+                <Picker
+                ItemDisplayBinding="{Binding nombre}"
+                ItemsSource="{Binding Viajespick}"
+                SelectedItem="{Binding Viajes}"
+                Title="Viajes">
+                </Picker>
+                <Button 
+                BackgroundColor="#00A14E" 
+                BorderRadius="23"
+                Text="Enviar" 
+                TextColor="White" 
+                Font="Bold"
+                HeightRequest="60"
+                HorizontalOptions="FillAndExpand"
+                Command="{Binding EnviarCommand}">
+                </Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

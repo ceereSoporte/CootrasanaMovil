@@ -11,25 +11,25 @@
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Origen: "  FontSize="16"/>
                                 <Label x:Name="Usuario"  
-                       Text="{Binding name}"  
+                       Text="{Binding Origen}"  
                        FontSize="16"  
                        TextColor="Red"/>
                                 <Label Text="Detino: "  FontSize="16"/>
-                                <Label x:Name="Clave"  
-                       Text="{Binding Password}"  
+                                <Label x:Name="Destino"  
+                       Text="{Binding Destino}"  
                        FontSize="16"  
                        TextColor="Red"/>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="NoPersonas: "  FontSize="16"/>
-                                <Label x:Name="Nombres"  
-                       Text="{Binding Nombres}"  
+                                <Label x:Name="NoPersonas"  
+                       Text="{Binding NoPersonas}"  
                        FontSize="16"  
                        TextColor="Red"/>
                                 <Label Text="ValTickets: "  FontSize="16"/>
-                                <Label x:Name="Apellidos"  
-                       Text="{Binding Apellidos}"  
+                                <Label x:Name="ValTickets"  
+                       Text="{Binding ValTickets}"  
                        FontSize="16"  
                        TextColor="Red"/>
                             </StackLayout>

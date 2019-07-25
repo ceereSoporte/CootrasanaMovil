@@ -7,6 +7,9 @@ namespace Cootrasana.ViewModel
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
     using Xamarin.Forms;
 
@@ -26,11 +29,30 @@ namespace Cootrasana.ViewModel
         private string destino;
         private string origen;
         private ApiService apiService;
+        private ObservableCollection<IntermediosModel> destinoPick;
+        private ObservableCollection<IntermediosModel> origenPick;
+        private IntermediosDataBase IntermediosModel;
 
 
         #endregion
 
         #region Properties
+
+        public IntermediosModel Intermedios { get; set; }
+
+        public List<IntermediosModel> MyIntermedios { get; set; }
+
+        public ObservableCollection<IntermediosModel> DestinoPick
+        {
+            get { return this.destinoPick; }
+            set { this.SetValue(ref this.destinoPick, value); }
+        }
+
+        public ObservableCollection<IntermediosModel> OrigenPicket
+        {
+            get { return this.origenPick; }
+            set { this.SetValue(ref this.origenPick, value); }
+        }
 
         public string Destino
         {
@@ -130,6 +152,15 @@ namespace Cootrasana.ViewModel
             this.NoPersonas = 0;
             this.ValTicket = 0;
             this.apiService = new ApiService();
+            this.IntermediosModel = new IntermediosDataBase();
+            this.LoadIntermedios();
+        }
+
+        private void LoadIntermedios()
+        {
+            this.DestinoPick = new ObservableCollection<IntermediosModel>(IntermediosModel.GetMembers().OrderBy(i => i.destino.Distinct()));
+            this.OrigenPicket = new ObservableCollection<IntermediosModel>(IntermediosModel.GetMembers().OrderBy(i => i.origen.Distinct()));
+            this.DestinoPick.Select(i => i.destino.Distinct());
         }
         #endregion
 
@@ -168,8 +199,8 @@ namespace Cootrasana.ViewModel
                 {
                     Tickets = new TicketsModel();
                     TicketsModel = new TicketsDataBase();
-                    Tickets.Origen = Origen;
-                    Tickets.Destino = Destino;
+                    Tickets.Origen = Intermedios.origen;
+                    Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
                     Tickets.NoPersonas = NoPersonas;
                     Tickets.Fecha = Fecha;
@@ -196,8 +227,8 @@ namespace Cootrasana.ViewModel
                 {
                     Tickets = new TicketsModel();
                     TicketsModel = new TicketsDataBase();
-                    Tickets.Origen = Origen;
-                    Tickets.Destino = Destino;
+                    Tickets.Origen = Intermedios.origen;
+                    Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
                     Tickets.Fecha = Fecha;
                     Tickets.Encomienda = isToggled;

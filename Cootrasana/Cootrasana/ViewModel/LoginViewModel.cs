@@ -7,6 +7,7 @@ namespace Cootrasana.ViewModel
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Windows.Input;
     using Xamarin.Forms;  
 
@@ -16,24 +17,31 @@ namespace Cootrasana.ViewModel
 
         private LoginDataBase loginModel;
         private LoginModel login;
+        //private UsuariosModel User;
+        //private UsuariosDataBase UserModel;
         private ApiService apiService;
+        public bool isEnable;
 
         #endregion
 
         #region Properties
 
-        public TicketsViewModel Tickets { get; set; }
         public string Usuario { get; set; }
         public string Clave { get; set; }
         public List<LoginModel> MyLogin { get; set; }
+        public bool IsEnable
+        {
+            get { return this.isEnable; }
+            set { this.SetValue(ref this.isEnable, value); }
+        }
 
         #endregion
 
         #region Constructor
         public LoginViewModel()
         {
-            this.Tickets = new TicketsViewModel();
             this.apiService = new ApiService();
+            this.IsEnable = true;
         }
         #endregion
 
@@ -60,66 +68,47 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
-            var url = Application.Current.Resources["UrlAPI"].ToString();
-            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
-            var controller = Application.Current.Resources["UrlUserController"].ToString();
-            var response = await this.apiService.GetList<LoginModel>(url, prefix, controller);
-
-            MyLogin = (List<LoginModel>)response.Result;
-
-            login = new LoginModel();
-            loginModel = new LoginDataBase();
-            
-
-            if (MyLogin.Count != 0)
+            this.IsEnable = false;
+            var loginPOS = new LoginModel
             {
-                loginModel.DeleteTable();
-            }
-            foreach (var item in MyLogin)
-            {
-                login.name = item.name;
-                login.Password = item.Password;
-                login.Nombres = item.Nombres;
-                login.Apellidos = item.Apellidos;
-                loginModel.AddMember(login);
-            }
-
-            bool usu = VerifyPassword();
-
-
-            if (!usu)
-            {
-                await App.Current.MainPage.DisplayAlert("", "Usuario y/o contraseña incorrecta ", "Aceptar");
-                return;
-            }
-            MainViewModel.GetInstance().Tickets = new TicketsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
-
-        }
-
-        private bool VerifyPassword()
-        {
-            var loginModel = new LoginModel
-            {
-                name = this.Usuario,
-                Password = this.Clave
+                user = this.Usuario,
+                password = this.Clave
             };
 
             var url = Application.Current.Resources["UrlAPI"].ToString();
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlPassController"].ToString();
-            var response = this.apiService.Post<LoginModel>(url, prefix, controller,loginModel);
+            var response = await this.apiService.PostLogin<LoginModel>(url, prefix, controller, loginPOS);
 
-            if (!response.Result.IsSuccess)
+            login = new LoginModel();
+            loginModel = new LoginDataBase();
+
+            if (!response.IsSuccess)
             {
-                return false;
+                await App.Current.MainPage.DisplayAlert("", "Usuario y/o contraseña incorrecta ", "Aceptar");
+                return;
             }
-            else
+
+            var usuario = (LoginModel)response.Result;
+
+            if (usuario != null)
             {
-                return true;
+                loginModel.DeleteTable();
             }
-        }
-        
+            //Guardado del usurio cuando existe
+            login.id = usuario.id;
+            login.user = usuario.user;
+            login.password = usuario.password;
+            login.nombres = usuario.nombres;
+            login.apellidos = usuario.apellidos;
+            loginModel.AddMember(login);
+            
+
+            MainViewModel.GetInstance().Viajes = new ViajesViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new ViajesPage());
+            this.IsEnable = true;
+
+        }       
 
         #endregion
     }

@@ -8,6 +8,7 @@ namespace Cootrasana.ViewModel
     {
         public TicketsViewModel Tickets { get; set; }
         public LoginViewModel Login { get; set; }
+        public ViajesViewModel Viajes { get; set; }
 
         public MainViewModel()
         {

@@ -1,46 +1,48 @@
-﻿
+﻿using SQLite;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Xamarin.Forms;
+
 namespace Cootrasana.Models
 {
-    using SQLite;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Xamarin.Forms;
-
-    public class LoginDataBase
+    public class UsuariosDataBase
     {
         private SQLiteConnection conn;
 
         //CREATE  
-        public LoginDataBase()
+        public UsuariosDataBase()
         {
             conn = DependencyService.Get<ConectionSQLite>().GetConnection();
-            conn.CreateTable<LoginModel>();
+            conn.CreateTable<UsuariosModel>();
         }
 
         //READ  
-        public IEnumerable<LoginModel> GetMembers()
+        public IEnumerable<UsuariosModel> GetMembers()
         {
-            var members = (from mem in conn.Table<LoginModel>() select mem);
+            var members = (from mem in conn.Table<UsuariosModel>() select mem);
             return members.ToList();
         }
-        
+
         //INSERT  
-        public string AddMember(LoginModel login)
+        public string AddMember(UsuariosModel Usuarios)
         {
-            conn.Insert(login);
+            conn.Insert(Usuarios);
             return "success";
         }
         //DELETE  
         public string DeleteMember(int id)
         {
-            conn.Delete<LoginModel>(id);
+            conn.Delete<UsuariosModel>(id);
             return "success";
         }
         //DELETE DATOS
         public string DeleteTable()
         {
-            conn.DeleteAll<LoginModel>();
+            conn.DeleteAll<UsuariosModel>();
             return "success";
         }
     }
 }
+

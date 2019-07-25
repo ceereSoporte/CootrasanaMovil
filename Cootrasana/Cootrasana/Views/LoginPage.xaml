@@ -59,19 +59,11 @@
                     <Button
                         BackgroundColor="#00A14E"
                         BorderRadius="23"
+                        IsEnabled="{Binding IsEnable}"
                         Command="{Binding LoginCommand}"
                         HeightRequest="46"
                         HorizontalOptions="FillAndExpand"
                         Text="Ingresar"
-                        TextColor="White">
-                    </Button>
-                    <Button
-                        BackgroundColor="#00A14E"
-                        BorderRadius="23"
-                        Command="{Binding RegisterCommand}"
-                        HeightRequest="46"
-                        HorizontalOptions="FillAndExpand"
-                        Text="Register"
                         TextColor="White">
                     </Button>
                 </StackLayout>                

@@ -4,12 +4,11 @@
 
     public class LoginModel
     {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
-        public string name { get; set; }
-        public string Password { get; set; }
-        public string Nombres { get; set; }
-        public string Apellidos { get; set; }
+        public int id { get; set; }
+        public string nombres { get; set; }
+        public string apellidos { get; set; }
+        public string user { get; set; }
+        public string password { get; set; }
 
         public LoginModel()
         {

@@ -73,7 +73,7 @@
             }
         }
 
-        public async Task<Response> Post<T>(string urlBase, string prefix, string controller, LoginModel User)
+        public async Task<Response> PostLogin<T>(string urlBase, string prefix, string controller, T User)
         {
             try
             {
@@ -95,6 +95,45 @@
                 }
 
                 var obj = JsonConvert.DeserializeObject<T>(answer);
+                return new Response
+                {
+                    IsSuccess = true,
+                    Result = obj,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
+
+        public async Task<Response> Post<T>(string urlBase, string prefix, string controller, T User)
+        {
+            try
+            {
+                var request = JsonConvert.SerializeObject(User);
+                var content = new StringContent(request, Encoding.UTF8, "application/json");
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(urlBase);
+                var url = $"{prefix}{controller}";
+                var response = await client.PostAsync(url, content);
+                var answer = await response.Content.ReadAsStringAsync();
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = answer,
+                    };
+                }
+
+                var obj = JsonConvert.DeserializeObject<List<T>>(answer);
                 return new Response
                 {
                     IsSuccess = true,

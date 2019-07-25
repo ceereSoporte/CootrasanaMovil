@@ -8,40 +8,40 @@ namespace Cootrasana.Views
 
     public partial class List : ContentPage
 	{
-        public LoginDataBase Tickets;
+        public TicketsDataBase Tickets;
 
         public List ()
 		{
 			InitializeComponent ();
 
-            Tickets = new LoginDataBase();
+            Tickets = new TicketsDataBase();
             var tickets = Tickets.GetMembers();
             listMembers.ItemsSource = tickets;
         }
 
         public async void OnSelected(object obj, ItemTappedEventArgs args)
         {
-            var tickets = args.Item as LoginModel;
+            var tickets = args.Item as TicketsModel;
 
-            await DisplayAlert(
-             "Persona",
-             "Origen: " + tickets.name + "\n" + "Destino: " + tickets.Password + "\n" + "Número de personas: " + tickets.Nombres + "\n" + "Valor de Tickets: $" + tickets.Apellidos ,
-             "OK");
+            //await DisplayAlert(
+            // "Persona",
+            // "Origen: " + tickets.Origen + "\n" + "Destino: " + tickets.Destino + "\n" + "Número de personas: " + tickets.NoPersonas + "\n" + "Valor de Tickets: $" + tickets.ValTicket ,
+            // "OK");
 
-            //if (tickets.Encomienda == false)
-            //{
-            //    await DisplayAlert(
-            //     "Persona",
-            //     "Origen: " + tickets.Origen + "\n" + "Destino: " + tickets.Destino + "\n" + "Número de personas: " + tickets.NoPersonas + "\n" + "Valor de Tickets: $" + tickets.ValTicket + "\n" + "Fecha: " + tickets.Fecha,
-            //     "OK");
-            //}
-            //else
-            //{
-            //    await DisplayAlert(
-            //     "Encomienda",
-            //     "Origen: " + tickets.Origen + "\n" + "Destino: " + tickets.Destino + "\n"  + "Valor de Tickets: $" + tickets.ValTicket + "\n" + "Fecha: " + tickets.Fecha,
-            //     "OK");
-            //}
+            if (tickets.Encomienda == false)
+            {
+                await DisplayAlert(
+                 "Persona",
+                 "Origen: " + tickets.Origen + "\n" + "Destino: " + tickets.Destino + "\n" + "Número de personas: " + tickets.NoPersonas + "\n" + "Valor de Tickets: $" + tickets.ValTicket + "\n" + "Fecha: " + tickets.Fecha,
+                 "OK");
+            }
+            else
+            {
+                await DisplayAlert(
+                 "Encomienda",
+                 "Origen: " + tickets.Origen + "\n" + "Destino: " + tickets.Destino + "\n" + "Valor de Tickets: $" + tickets.ValTicket + "\n" + "Fecha: " + tickets.Fecha,
+                 "OK");
+            }
 
         }
     }

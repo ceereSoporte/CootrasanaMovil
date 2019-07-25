@@ -28,45 +28,31 @@
                        VerticalOptions="Center"/>
                 </Grid>
                 <Grid>
-                    <Grid.ColumnDefinitions>
+                    <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button
+                    </Grid.ColumnDefinitions>-->
+                    <!--<Button
                         Grid.Column="0"                    
                         Image="ic_action_arrow_left"
-                        BackgroundColor="#00A14E"/>
-                    <Picker 
-                        Grid.Column="1"
-                        x:Name="pickerOrigen"
-                        Title="Seleccione un Origen"
-                        SelectedItem="{Binding Origen}">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>T. Sur</x:String>
-                                <x:String>T. Norte</x:String>
-                                <x:String>Heliconia</x:String>
-                                <x:String>San Antonio de prado</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
+                        BackgroundColor="#00A14E"/>-->
+                    <Picker                        
+                        ItemDisplayBinding="{Binding origen}"
+                        ItemsSource="{Binding OrigenPicket}"
+                        SelectedItem="{Binding Intermedios}"
+                        Title="Origen">
                     </Picker>
-                    <Button 
+                    <!--<Button 
                         Grid.Column="2"
                         Image="ic_action_play_arrow"
-                        BackgroundColor="#00A14E"/>
+                        BackgroundColor="#00A14E"/>-->
                 </Grid>
-                <Picker x:Name="pickerDestino"
-                    Title="Seleccione un Destino"
-                    SelectedItem="{Binding Destino}">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>T. Sur</x:String>
-                            <x:String>T. Norte</x:String>
-                            <x:String>Heliconia</x:String>
-                            <x:String>San Antonio de prado</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
+                <Picker                        
+                        ItemDisplayBinding="{Binding destino}"
+                        ItemsSource="{Binding OrigenPicket}"
+                        SelectedItem="{Binding Intermedios}"
+                        Title="Destino">
                 </Picker>
                 <Label
                     Text="Número de personas"
@@ -134,7 +120,7 @@
                     Command="{Binding PrintCommand}"
                     IsEnabled="{Binding IsEnable}">
                     </Button>
-                    <Button 
+                    <!--<Button 
                     BackgroundColor="#F05050"
                     BorderRadius="23"
                     Text="Eliminar" 
@@ -145,7 +131,7 @@
                     HorizontalOptions="FillAndExpand"
                     IsVisible="{Binding IsVisibleAlert}"
                     Command="{Binding ClearCampos}">
-                    </Button>
+                    </Button>-->
                 </StackLayout>
             </StackLayout>
         </ScrollView>
