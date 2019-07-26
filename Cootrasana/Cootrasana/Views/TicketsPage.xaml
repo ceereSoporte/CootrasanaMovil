@@ -38,9 +38,9 @@
                         Image="ic_action_arrow_left"
                         BackgroundColor="#00A14E"/>-->
                     <Picker                        
-                        ItemDisplayBinding="{Binding origen}"
+                        ItemDisplayBinding="{Binding nombre}"
                         ItemsSource="{Binding OrigenPicket}"
-                        SelectedItem="{Binding Intermedios}"
+                        SelectedItem="{Binding Ubicaciones}"
                         Title="Origen">
                     </Picker>
                     <!--<Button 
@@ -50,7 +50,7 @@
                 </Grid>
                 <Picker                        
                         ItemDisplayBinding="{Binding destino}"
-                        ItemsSource="{Binding OrigenPicket}"
+                        ItemsSource="{Binding DestinoPick}"
                         SelectedItem="{Binding Intermedios}"
                         Title="Destino">
                 </Picker>
@@ -92,26 +92,32 @@
                     IsEnabled="{Binding IsEnableVal}"
                     HorizontalOptions="FillAndExpand">
                 </Entry>
-                <StackLayout
-                        Margin="20,0"
-                        Orientation="Horizontal"
-                        VerticalOptions="CenterAndExpand">
+                <StackLayout>
                     <Button 
                     BackgroundColor="#F05050"
                     BorderRadius="23"
                     Text="Visualizar" 
                     TextColor="White"  
                     Font="Bold"
-                    Image="ic_action_add_alert"
                     HeightRequest="60"
                     HorizontalOptions="FillAndExpand"
                     IsVisible="{Binding IsVisibleAlert}"
                     Command="{Binding AlertCommand}">
                     </Button>
                     <Button 
+                    BackgroundColor="#F05050"
+                    BorderRadius="23"
+                    Text="Terminar Viaje" 
+                    TextColor="White"  
+                    Font="Bold"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    Command="{Binding FinishCommand}">
+                    </Button>
+                    <Button 
                     BackgroundColor="#00A14E" 
                     BorderRadius="23"
-                    Text="Guardar" 
+                    Text="Imprimir" 
                     TextColor="White" 
                     Font="Bold"
                     HeightRequest="60"
@@ -120,18 +126,18 @@
                     Command="{Binding PrintCommand}"
                     IsEnabled="{Binding IsEnable}">
                     </Button>
-                    <!--<Button 
+                    <Button 
                     BackgroundColor="#F05050"
                     BorderRadius="23"
-                    Text="Eliminar" 
+                    Text="Alerta" 
                     TextColor="White"  
                     Font="Bold"
                     Image="ic_action_add_alert"
                     HeightRequest="60"
                     HorizontalOptions="FillAndExpand"
                     IsVisible="{Binding IsVisibleAlert}"
-                    Command="{Binding ClearCampos}">
-                    </Button>-->
+                    Command="{Binding Alerta}">
+                    </Button>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

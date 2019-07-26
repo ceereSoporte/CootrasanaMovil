@@ -33,6 +33,7 @@
                         Keyboard="Email"
                         TextColor="Black"
                         Text="{Binding Usuario}"
+                        IsEnabled="{Binding IsEnable}"
                         Placeholder="correo@correo.com">
                     </Entry>
                     <Label
@@ -49,6 +50,7 @@
                         IsPassword="true"
                         TextColor="Black"
                         Text="{Binding Clave}"
+                        IsEnabled="{Binding IsEnable}"
                         Placeholder="Contraseña">
                     </Entry>
                 </Grid>

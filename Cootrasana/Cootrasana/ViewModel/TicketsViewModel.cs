@@ -24,21 +24,57 @@ namespace Cootrasana.ViewModel
         private bool isVisibleAlert;
         private bool isToggled;
         private bool isEnableVal;
+        private bool alerta;
         private int noPersonas;
         private Double valTicket;
         private string destino;
         private string origen;
         private ApiService apiService;
         private ObservableCollection<IntermediosModel> destinoPick;
-        private ObservableCollection<IntermediosModel> origenPick;
+        private ObservableCollection<UbicacionesModel> origenPick;
         private IntermediosDataBase IntermediosModel;
+        private UbicacionesDataBase UbicacionesModel;
+        private UbicacionesModel ubicaciones;
+        private IntermediosModel intermedios;
+        private double val;
 
 
         #endregion
 
         #region Properties
 
-        public IntermediosModel Intermedios { get; set; }
+        public IntermediosModel Intermedios
+        {
+            get { return this.intermedios; }
+            set
+            {
+                this.SetValue(ref this.intermedios, value);
+                
+                if (Intermedios == null)
+                {
+                    return;
+                }
+                var Valor = IntermediosModel.GetVal(Ubicaciones.id, Intermedios.idDestino);
+
+                foreach (var item in Valor)
+                {
+                    val = item.valor;
+                }
+                ValTicket = val * NoPersonas;
+            }
+
+        }
+
+        public UbicacionesModel Ubicaciones
+        {
+            get { return this.ubicaciones; }
+            set
+            {
+                this.SetValue(ref this.ubicaciones, value);
+                this.DestinoPick = new ObservableCollection<IntermediosModel>(IntermediosModel.GetOneMembers(Ubicaciones.id).OrderBy(i => i.destino));
+            }
+        }
+        
 
         public List<IntermediosModel> MyIntermedios { get; set; }
 
@@ -48,7 +84,7 @@ namespace Cootrasana.ViewModel
             set { this.SetValue(ref this.destinoPick, value); }
         }
 
-        public ObservableCollection<IntermediosModel> OrigenPicket
+        public ObservableCollection<UbicacionesModel> OrigenPicket
         {
             get { return this.origenPick; }
             set { this.SetValue(ref this.origenPick, value); }
@@ -103,6 +139,13 @@ namespace Cootrasana.ViewModel
             get { return this.isVisibleAlert; }
             set { this.SetValue(ref this.isVisibleAlert, value); }
         }
+
+        public bool AlertaTicket
+        {
+            get { return this.alerta; }
+            set { this.SetValue(ref this.alerta, value); }
+        }
+
         public bool IsToggled
         {
             get { return this.isToggled; }
@@ -125,7 +168,7 @@ namespace Cootrasana.ViewModel
                     IsVisibleAlert = true;
                     ValTicket = 0;
                     NoPersonas = 0;
-                    IsEnableVal = false;
+                    IsEnableVal = false; 
 
                 }
                 OnPropertyChanged(nameof(IsToggled));
@@ -147,20 +190,20 @@ namespace Cootrasana.ViewModel
             this.IsEnable = true;
             this.IsEnableVal = true;
             this.IsToggled = false;
+            this.AlertaTicket = false;
             this.IsVisible = true;
             this.IsVisibleAlert = true;
-            this.NoPersonas = 0;
-            this.ValTicket = 0;
+            this.NoPersonas = 1;
+            this.ValTicket = val * NoPersonas;
             this.apiService = new ApiService();
             this.IntermediosModel = new IntermediosDataBase();
+            this.UbicacionesModel = new UbicacionesDataBase();
             this.LoadIntermedios();
         }
 
         private void LoadIntermedios()
         {
-            this.DestinoPick = new ObservableCollection<IntermediosModel>(IntermediosModel.GetMembers().OrderBy(i => i.destino.Distinct()));
-            this.OrigenPicket = new ObservableCollection<IntermediosModel>(IntermediosModel.GetMembers().OrderBy(i => i.origen.Distinct()));
-            this.DestinoPick.Select(i => i.destino.Distinct());
+            this.OrigenPicket = new ObservableCollection<UbicacionesModel>(UbicacionesModel.GetMembers().OrderBy(i => i.nombre));
         }
         #endregion
 
@@ -177,18 +220,16 @@ namespace Cootrasana.ViewModel
 
         private async void Print()
         {
-            var connection = await this.apiService.CheckConnection();
-            if (!connection.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
-                return;
-            }
+            Tickets = new TicketsModel();
+            TicketsModel = new TicketsDataBase();
+            
+            var ViajeModel = new ViajesDataBase();
 
-
+            var viaje = ViajeModel.GetMembers();
 
             if (IsToggled == false)
             {
-                if (Destino == "" || Origen == "" || NoPersonas <= 0)
+                if (Intermedios.destino == "" || Intermedios.origen == "" || NoPersonas <= 0)
                 {
                     await App.Current.MainPage.DisplayAlert(
                     "Error",
@@ -197,26 +238,29 @@ namespace Cootrasana.ViewModel
                 }
                 else
                 {
-                    Tickets = new TicketsModel();
-                    TicketsModel = new TicketsDataBase();
-                    Tickets.Origen = Intermedios.origen;
+
+                    Tickets.Origen = Ubicaciones.nombre;
                     Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
                     Tickets.NoPersonas = NoPersonas;
                     Tickets.Fecha = Fecha;
                     Tickets.Encomienda = isToggled;
+                    Tickets.idDestino = Intermedios.idDestino;
+                    Tickets.idOrigen = Ubicaciones.id;
+                    foreach (var item in viaje)
+                    {
+                        Tickets.Hora = item.Hora;
+                        Tickets.idViaje = item.id;
+                    }
+                    Tickets.Alert = AlertaTicket;
                     TicketsModel.AddMember(Tickets);
                     ClearControll();
-                    //await App.Current.MainPage.DisplayAlert(
-                    //"Imprimir",
-                    //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Número de personas: " + NoPersonas + "\n" + "Valor de Tickets: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
-                    //"OK");
                 }
             }
 
             else
             {
-                if (Destino == "" || Origen == "" || ValTicket <= 0)
+                if (Intermedios.destino == "" || Intermedios.origen == "" || ValTicket <= 0)
                 {
                     await App.Current.MainPage.DisplayAlert(
                     "Error",
@@ -225,19 +269,22 @@ namespace Cootrasana.ViewModel
                 }
                 else
                 {
-                    Tickets = new TicketsModel();
-                    TicketsModel = new TicketsDataBase();
-                    Tickets.Origen = Intermedios.origen;
+                    Tickets.Origen = Ubicaciones.nombre;
                     Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
                     Tickets.Fecha = Fecha;
+                    Tickets.NoPersonas = 0;
                     Tickets.Encomienda = isToggled;
+                    Tickets.idDestino = Intermedios.idDestino;
+                    Tickets.idOrigen = Ubicaciones.id;
+                    foreach (var item in viaje)
+                    {
+                        Tickets.Hora = item.Hora;
+                        Tickets.idViaje = item.id;
+                    }
+                    Tickets.Alert = AlertaTicket;
                     TicketsModel.AddMember(Tickets);
                     ClearControll();
-                    //await App.Current.MainPage.DisplayAlert(
-                    //"Imprimir",
-                    //"Origen: " + Origen + "\n" + "Destino: " + Destino + "\n" + "Valor encomienda: $" + ValTicket + "\n" + "Fecha: " + DateTime.Now,
-                    //"OK");
                 }
 
             }
@@ -246,25 +293,11 @@ namespace Cootrasana.ViewModel
         public void ClearControll()
         {
             NoPersonas = 0;
-            Origen = "";
-            Destino = "";
+            Intermedios.destino = "";
             ValTicket = 0;
+            AlertaTicket = false;
         }
-
-        public ICommand ClearCampos
-        {
-            get
-            {
-                return new RelayCommand(EliminarDatos);
-            }
-        }
-
-        private void EliminarDatos()
-        {
-            TicketsModel = new TicketsDataBase();
-            TicketsModel.DeleteTable();
-        }
-
+        
         public ICommand AlertCommand
         {
             get
@@ -296,7 +329,7 @@ namespace Cootrasana.ViewModel
             else
             {
                 NoPersonas = NoPersonas - 1;
-                ValTicket = NoPersonas * 14000;
+                ValTicket = NoPersonas * val;
             }            
         }
 
@@ -311,7 +344,68 @@ namespace Cootrasana.ViewModel
         private void Left()
         {
            NoPersonas = NoPersonas + 1;
-           ValTicket = NoPersonas * 14000;
+           ValTicket = NoPersonas * val;
+        }
+
+        public ICommand Alerta
+        {
+            get
+            {
+                return new RelayCommand(Alarma);
+            }
+        }
+
+        private void Alarma()
+        {
+            this.AlertaTicket = true;
+        }
+
+        public ICommand FinishCommand
+        {
+            get
+            {
+                return new RelayCommand(Finish);
+            }
+        }
+
+        private async void Finish()
+        {
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                return;
+            }
+            
+            var POS = TicketsModel.GetMembers();
+
+            foreach (var item in POS)
+            {
+                var TicketsPOS = new TicketsModel
+                {
+                    Origen = item.Origen,
+                    Destino = item.Destino,
+                    idOrigen = item.idOrigen,
+                    idDestino = item.idDestino,
+                    NoPersonas = item.NoPersonas,
+                    ValTicket = item.ValTicket,
+                    Encomienda = item.Encomienda,
+                    Alert = item.Alert,
+                    Hora = item.Hora,
+                    idViaje = item.idViaje,
+                    Fecha = item.Fecha
+                };
+
+                var url = Application.Current.Resources["UrlAPI"].ToString();
+                var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+                var controller = Application.Current.Resources["UrlTicket"].ToString();
+                var response = await this.apiService.PostLogin<TicketsModel>(url, prefix, controller, TicketsPOS);
+
+                if (!response.IsSuccess)
+                {
+                    await App.Current.MainPage.DisplayAlert("El servicio esta malo","","Aceptar");
+                }
+            }
         }
 
         #endregion

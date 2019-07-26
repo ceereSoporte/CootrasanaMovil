@@ -22,6 +22,8 @@ namespace Cootrasana.ViewModel
         private LoginModel login;
         private IntermediosModel intermedios;
         private IntermediosDataBase intermediosModel;
+        private UbicacionesModel Ubicaciones;
+        private UbicacionesDataBase UbicacionesData;
         private ObservableCollection<ViajesModel> viajespick;
         private ViajesModel viajes;
         private int idusuario;
@@ -49,6 +51,7 @@ namespace Cootrasana.ViewModel
 
         public List<GeneralModel> MyViajes { get; set; }
         public List<ViajesModel> MyIntermedios { get; set; }
+        public List<UbicacionesModel> MyUbicaciones { get; set; }
 
         #endregion
 
@@ -111,6 +114,7 @@ namespace Cootrasana.ViewModel
                 viajes.origen = item.origen;
                 viajes.destino = item.destino;
                 viajes.valor = item.valor;
+                viajes.Hora = item.horaViaje;
                 viajesModel.AddMember(viajes);
             }
 
@@ -153,7 +157,11 @@ namespace Cootrasana.ViewModel
 
             this.MyIntermedios = (List<ViajesModel>)response.Result;
 
+            viajesModel.DeleteMember(this.Viajes.id);
+
             var consul = viajesModel.GetOneMembers(this.Viajes.id);
+
+            this.LlenarUbicaciones(Load.id);
 
             if (MyIntermedios != null)
             {
@@ -188,6 +196,42 @@ namespace Cootrasana.ViewModel
             MainViewModel.GetInstance().Tickets = new TicketsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
             this.IsEnable = true;
+        }
+
+        private async void LlenarUbicaciones(int id)
+        {
+            this.Ubicaciones = new UbicacionesModel();
+            this.UbicacionesData = new UbicacionesDataBase();
+
+            var LoadUbicaciones = new UbicacionesModel
+            {
+                id = id
+            };
+
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+            var controller = Application.Current.Resources["UrlUbicaciones"].ToString();
+            var response = await this.apiService.Post<UbicacionesModel>(url, prefix, controller, LoadUbicaciones);
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Esta ruta no posee intermedios, comuniquese con el administrador", "Aceptar");
+                return;
+            }
+
+            this.MyUbicaciones = (List<UbicacionesModel>)response.Result;
+
+            if (MyUbicaciones != null)
+            {
+                UbicacionesData.DeleteTable();
+            }
+
+            foreach (var item in MyUbicaciones)
+            {
+                Ubicaciones.id = item.id;
+                Ubicaciones.nombre = item.nombre;
+                UbicacionesData.AddMember(Ubicaciones);
+            }
         }
 
         #endregion

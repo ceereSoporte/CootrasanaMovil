@@ -9,12 +9,14 @@
             <infra:InstanceLocator x:Key="Locator"/>
 
             <!-- Parameters -->
-            <x:String x:Key="UrlAPI">http://192.168.1.22:8000</x:String>
+            <x:String x:Key="UrlAPI">http://192.168.1.19:8000</x:String>
             <x:String x:Key="UrlPrefix">/api</x:String>
             <x:String x:Key="UrlUserController">/users</x:String>
             <x:String x:Key="UrlPassController">/users/verify</x:String>
             <x:String x:Key="UrlViajes">/travel</x:String>
             <x:String x:Key="UrlIntermedios">/travel/inter</x:String>
+            <x:String x:Key="UrlUbicaciones">/travel/ubication</x:String>
+            <x:String x:Key="UrlTicket">/ticket</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

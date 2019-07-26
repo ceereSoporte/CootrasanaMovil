@@ -55,7 +55,6 @@ namespace Cootrasana.ViewModel
         }
         #endregion
 
-
         #region Command
         public ICommand LoginCommand
         {
@@ -68,6 +67,13 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                return;
+            }
+
             this.IsEnable = false;
             var loginPOS = new LoginModel
             {
@@ -86,6 +92,7 @@ namespace Cootrasana.ViewModel
             if (!response.IsSuccess)
             {
                 await App.Current.MainPage.DisplayAlert("", "Usuario y/o contraseña incorrecta ", "Aceptar");
+                this.IsEnable = true;
                 return;
             }
 

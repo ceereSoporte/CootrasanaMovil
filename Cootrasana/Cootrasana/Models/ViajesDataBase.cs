@@ -40,9 +40,22 @@ namespace Cootrasana.Models
         }
 
         //DELETE  
-        public string DeleteMember(int id)
+        public string Delete(int id)
         {
             conn.Delete<ViajesModel>(id);
+            return "success";
+        }
+
+
+        public string DeleteMember(int id)
+        {
+            var member = (from mem in conn.Table<ViajesModel>() select mem).Where(mem => mem.id != id);
+            var lis = member.ToList();
+            foreach (var item in lis)
+            {
+                conn.Delete<ViajesModel>(item.id);
+            }
+            
             return "success";
         }
         //DELETE DATOS

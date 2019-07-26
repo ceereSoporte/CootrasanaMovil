@@ -25,6 +25,18 @@ namespace Cootrasana.Models
             return members.ToList();
         }
 
+        public IEnumerable<IntermediosModel> GetOneMembers(int id)
+        {
+            var members = (from mem in conn.Table<IntermediosModel>() select mem).Where(i => i.idOrigen == id);
+            return members.ToList();
+        }
+
+        public IEnumerable<IntermediosModel> GetVal(int idOrigen, int idDestino)
+        {
+            var members = (from mem in conn.Table<IntermediosModel>() select mem).Where(i => i.idOrigen == idOrigen && i.idDestino == idDestino);
+            return members.ToList();
+        }
+        
         //INSERT  
         public string AddMember(IntermediosModel intermedio)
         {
