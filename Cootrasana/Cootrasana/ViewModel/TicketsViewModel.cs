@@ -399,13 +399,17 @@ namespace Cootrasana.ViewModel
                 var url = Application.Current.Resources["UrlAPI"].ToString();
                 var prefix = Application.Current.Resources["UrlPrefix"].ToString();
                 var controller = Application.Current.Resources["UrlTicket"].ToString();
-                var response = await this.apiService.PostLogin<TicketsModel>(url, prefix, controller, TicketsPOS);
+                var response = await this.apiService.PostPrint<TicketsModel>(url, prefix, controller, TicketsPOS);
 
                 if (!response.IsSuccess)
                 {
                     await App.Current.MainPage.DisplayAlert("El servicio esta malo","","Aceptar");
                 }
             }
+
+            TicketsModel.DeleteTable();
+            MainViewModel.GetInstance().Login = new LoginViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
         }
 
         #endregion
