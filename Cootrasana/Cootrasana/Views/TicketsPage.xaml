@@ -9,10 +9,10 @@
             BindingContext="{Binding Tickets}">
             <StackLayout
                     Padding="10">
-                <Entry 
-                    Text="{Binding Fecha}"
-                    IsEnabled="False">
-                </Entry>
+                <Picker ItemsSource="{Binding DeviceList}"
+                    Title="Seleccione Impresora"
+                    ItemDisplayBinding="{Binding .}"
+                    SelectedItem="{Binding SelectedDevice}" />
                 <Grid HorizontalOptions="Center"
                       VerticalOptions="Center">
                     <Grid.ColumnDefinitions>

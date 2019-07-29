@@ -37,11 +37,42 @@ namespace Cootrasana.ViewModel
         private UbicacionesModel ubicaciones;
         private IntermediosModel intermedios;
         private double val;
-
+        private readonly IBlueToothService blueToothService;
+        private IList<string> deviceList;
+        private string selectedDevice;
+        private string mensaje;
 
         #endregion
 
         #region Properties
+
+        public string Mensaje { get; set; }
+
+        public IList<string> DeviceList
+        {
+            get
+            {
+                if (deviceList == null)
+                    deviceList = new ObservableCollection<string>();
+                return deviceList;
+            }
+            set
+            {
+                deviceList = value;
+            }
+        }
+
+        public string SelectedDevice
+        {
+            get
+            {
+                return selectedDevice;
+            }
+            set
+            {
+                selectedDevice = value;
+            }
+        }
 
         public IntermediosModel Intermedios
         {
@@ -77,6 +108,7 @@ namespace Cootrasana.ViewModel
         
 
         public List<IntermediosModel> MyIntermedios { get; set; }
+        public List<TicketsModel> consulta { get; set; }
 
         public ObservableCollection<IntermediosModel> DestinoPick
         {
@@ -199,6 +231,9 @@ namespace Cootrasana.ViewModel
             this.IntermediosModel = new IntermediosDataBase();
             this.UbicacionesModel = new UbicacionesDataBase();
             this.LoadIntermedios();
+            blueToothService = DependencyService.Get<IBlueToothService>();
+            this.BindDeviceList();
+
         }
 
         private void LoadIntermedios()
@@ -227,6 +262,12 @@ namespace Cootrasana.ViewModel
 
             var viaje = ViajeModel.GetMembers();
 
+            if (selectedDevice == null)
+            {
+                await App.Current.MainPage.DisplayAlert("Error","Debes de seleccionar una impresora","Aceptar");
+                return;
+            }
+
             if (IsToggled == false)
             {
                 if (Intermedios.destino == "" || Intermedios.origen == "" || NoPersonas <= 0)
@@ -238,7 +279,8 @@ namespace Cootrasana.ViewModel
                 }
                 else
                 {
-
+                    Mensaje = "Personas" + "\n" + "Origen: " + Ubicaciones.nombre + "\n" + "Destino: " + Intermedios.destino + "\n" + "NoPersona: " + NoPersonas + "\n" + "Valor: " + ValTicket + "\n" + "";
+                    Imprimir(Mensaje);
                     Tickets.Origen = Ubicaciones.nombre;
                     Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
@@ -269,6 +311,8 @@ namespace Cootrasana.ViewModel
                 }
                 else
                 {
+                    Mensaje = "Encomienda" + "\n" + "Origen: " + Ubicaciones.nombre + "\n" + "Destino: " + Intermedios.destino + "\n" + "Valor: " + ValTicket + "\n" + "";
+                    Imprimir(Mensaje);
                     Tickets.Origen = Ubicaciones.nombre;
                     Tickets.Destino = Intermedios.destino;
                     Tickets.ValTicket = ValTicket;
@@ -284,10 +328,16 @@ namespace Cootrasana.ViewModel
                     }
                     Tickets.Alert = AlertaTicket;
                     TicketsModel.AddMember(Tickets);
+
                     ClearControll();
                 }
 
             }
+        }
+
+        public void Imprimir(string Men)
+        {
+            blueToothService.Print(SelectedDevice, Men);
         }
 
         public void ClearControll()
@@ -370,46 +420,84 @@ namespace Cootrasana.ViewModel
 
         private async void Finish()
         {
-            var connection = await this.apiService.CheckConnection();
-            if (!connection.IsSuccess)
+
+            var answer = await Application.Current.MainPage.DisplayAlert("Confirmación", "¿Desea terminar el viaje?", "Sí", "No");
+            if (!answer)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
                 return;
             }
-            
-            var POS = TicketsModel.GetMembers();
 
-            foreach (var item in POS)
+
+            TicketsModel = new TicketsDataBase();
+
+            //var connection = await this.apiService.CheckConnection();
+            //if (!connection.IsSuccess)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+            //    return;
+            //}
+
+            //var POS = TicketsModel.GetMembers();
+
+            //foreach (var item in POS)
+            //{
+            //    var TicketsPOS = new TicketsModel
+            //    {
+            //        Origen = item.Origen,
+            //        Destino = item.Destino,
+            //        idOrigen = item.idOrigen,
+            //        idDestino = item.idDestino,
+            //        NoPersonas = item.NoPersonas,
+            //        ValTicket = item.ValTicket,
+            //        Encomienda = item.Encomienda,
+            //        Alert = item.Alert,
+            //        Hora = item.Hora,
+            //        idViaje = item.idViaje,
+            //        Fecha = item.Fecha
+            //    };
+
+            //    var url = Application.Current.Resources["UrlAPI"].ToString();
+            //    var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+            //    var controller = Application.Current.Resources["UrlTicket"].ToString();
+            //    var response = await this.apiService.PostPrint<TicketsModel>(url, prefix, controller, TicketsPOS);
+
+            //    if (!response.IsSuccess)
+            //    {
+            //        await App.Current.MainPage.DisplayAlert("El servicio esta malo","","Aceptar");
+            //    }
+            //}
+
+            var consulta = TicketsModel.GetMembers();
+            Decimal Personas = 0;
+            Decimal Encomiendas = 0;
+            foreach (var item in consulta)
             {
-                var TicketsPOS = new TicketsModel
+                if (item.Encomienda)
                 {
-                    Origen = item.Origen,
-                    Destino = item.Destino,
-                    idOrigen = item.idOrigen,
-                    idDestino = item.idDestino,
-                    NoPersonas = item.NoPersonas,
-                    ValTicket = item.ValTicket,
-                    Encomienda = item.Encomienda,
-                    Alert = item.Alert,
-                    Hora = item.Hora,
-                    idViaje = item.idViaje,
-                    Fecha = item.Fecha
-                };
-
-                var url = Application.Current.Resources["UrlAPI"].ToString();
-                var prefix = Application.Current.Resources["UrlPrefix"].ToString();
-                var controller = Application.Current.Resources["UrlTicket"].ToString();
-                var response = await this.apiService.PostPrint<TicketsModel>(url, prefix, controller, TicketsPOS);
-
-                if (!response.IsSuccess)
+                    Encomiendas += Convert.ToDecimal(item.ValTicket);
+                }
+                else
                 {
-                    await App.Current.MainPage.DisplayAlert("El servicio esta malo","","Aceptar");
+                    Personas += Convert.ToDecimal(item.ValTicket);
                 }
             }
+
+            Decimal Total = Personas + Encomiendas;
+            Mensaje = "Debes Liquidar" + "\n" + "Por Personas: " + Personas + "\n" + "Por Encomiendas: " + Encomiendas + "\n" + "Total: " + Total + "\n" + "";
+            Imprimir(Mensaje);
+            await Application.Current.MainPage.DisplayAlert("Debes Liquidar", "Por personas: " + Personas + "\n" + "Por Encomienda: " + Encomiendas + "\n" + "Total: " + Total, "Aceptar");
 
             TicketsModel.DeleteTable();
             MainViewModel.GetInstance().Login = new LoginViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
+        }
+
+        private void BindDeviceList()
+        {
+            var list = blueToothService.GetDeviceList();
+            DeviceList.Clear();
+            foreach (var item in list)
+                DeviceList.Add(item);
         }
 
         #endregion

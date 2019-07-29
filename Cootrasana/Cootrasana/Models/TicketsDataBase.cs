@@ -24,6 +24,7 @@ namespace Cootrasana.Models
             var members = (from mem in conn.Table<TicketsModel>() select mem);
             return members.ToList();
         }
+
         //INSERT  
         public string AddMember(TicketsModel tickets)
         {
