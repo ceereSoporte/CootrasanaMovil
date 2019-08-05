@@ -105,6 +105,7 @@ namespace Cootrasana.ViewModel
             }
 
             //Agregar a la tabla de viajes
+
             foreach (var item in MyViajes)
             {
                 viajes.id = item.id;
@@ -115,6 +116,9 @@ namespace Cootrasana.ViewModel
                 viajes.destino = item.destino;
                 viajes.valor = item.valor;
                 viajes.Hora = item.horaViaje;
+                viajes.Bus = item.Bus;
+                viajes.Placa = item.Placa;
+
                 viajesModel.AddMember(viajes);
             }
 
@@ -226,12 +230,16 @@ namespace Cootrasana.ViewModel
                 UbicacionesData.DeleteTable();
             }
 
+            int posicion = 0;
             foreach (var item in MyUbicaciones)
             {
                 Ubicaciones.id = item.id;
                 Ubicaciones.nombre = item.nombre;
+                Ubicaciones.posicion = posicion + 1;
                 UbicacionesData.AddMember(Ubicaciones);
+                posicion = Ubicaciones.posicion;
             }
+            posicion = 0;
         }
 
         #endregion

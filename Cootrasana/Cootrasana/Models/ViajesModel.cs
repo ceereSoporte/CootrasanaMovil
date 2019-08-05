@@ -16,6 +16,8 @@ namespace Cootrasana.Models
         public string nombre { get; set; }
         public int valor { get; set; }
         public string Hora { get; set; }
+        public string Bus { get; set; }
+        public string Placa { get; set; }
 
         public ViajesModel()
         {

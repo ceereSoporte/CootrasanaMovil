@@ -50,9 +50,7 @@ namespace Cootrasana.Droid.DependencyService
                         CreateRfcommSocketToServiceRecord(
                         UUID.FromString("00001101-0000-1000-8000-00805f9b34fb")))
                     {
-                        
-
-                        await bluetoothSocket.ConnectAsync();
+                        bluetoothSocket.Connect();
                         byte[] buffer = Encoding.UTF8.GetBytes(text);
                         //bluetoothSocket.OutputStream.Write(buffer, 0, buffer.Length);
                         await bluetoothSocket.OutputStream.WriteAsync(buffer, 0, buffer.Length);

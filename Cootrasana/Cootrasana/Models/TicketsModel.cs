@@ -20,6 +20,8 @@ namespace Cootrasana.Models
         public string Hora { get; set; }
         public int idViaje { get; set; }
         public DateTime Fecha { get; set; }
+        public string Bus { get; set; }
+        public string Placa { get; set; }
 
         public TicketsModel()
         {

@@ -17,6 +17,8 @@ namespace Cootrasana.Models
         public string nombre { get; set; } // Nombre de la Ruta
         public string password { get; set; }
         public int valor { get; set; }
-        public string horaViaje { get; set; } 
+        public string horaViaje { get; set; }
+        public string Bus { get; set; }
+        public string Placa { get; set; }
     }
 }
