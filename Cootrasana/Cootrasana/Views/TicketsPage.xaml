@@ -9,12 +9,10 @@
             BindingContext="{Binding Tickets}">
             <StackLayout
                     Padding="10">
-                <!--<Entry
-                        Grid.Column="1"
-                        Keyboard="Numeric"
-                        Text="{Binding Origen}"
-                        Placeholder="# Personas">
-                </Entry>-->
+                <Button
+                    Command="{Binding ValidarTicket}"
+                    Text="Validar Ticket">
+                </Button>
                 <Picker ItemsSource="{Binding DeviceList}"
                     Title="Seleccione Impresora"
                     ItemDisplayBinding="{Binding .}"
@@ -105,7 +103,7 @@
                 </Label>
                 <Entry
                     Keyboard="Numeric"
-                    Text="{Binding ValTicket}"
+                    Text="{Binding ValTicket, StringFormat='{0, 0:C0}'}"
                     IsEnabled="{Binding IsEnableVal}"
                     HorizontalOptions="FillAndExpand">
                 </Entry>
@@ -113,51 +111,64 @@
                    Margin="20,0"
                    Orientation="Horizontal"
                    VerticalOptions="End">
-                    <!--<Button 
-                    BackgroundColor="#F05050"
-                    BorderRadius="23"
-                    Text="Visualizar" 
-                    TextColor="White"  
-                    Font="Bold"
-                    HeightRequest="60"
-                    HorizontalOptions="FillAndExpand"
-                    IsVisible="{Binding IsVisibleAlert}"
-                    Command="{Binding AlertCommand}">
-                    </Button>-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+
+                        <!--<Button 
+                        BackgroundColor="#F05050"
+                        BorderRadius="23"
+                        Text="Visualizar" 
+                        TextColor="White"  
+                        Font="Bold"
+                        HeightRequest="60"
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="{Binding IsVisibleAlert}"
+                        Command="{Binding AlertCommand}">
+                        </Button>-->
+                        <Button 
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            BackgroundColor="#F05050"
+                            BorderRadius="23"
+                            Text="Terminar Viaje" 
+                            TextColor="White"  
+                            Font="Bold"
+                            HeightRequest="60"
+                            HorizontalOptions="FillAndExpand"
+                            Command="{Binding FinishCommand}">
+                        </Button>
+                        <Button 
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            BackgroundColor="#00A14E" 
+                            BorderRadius="23"
+                            Text="Imprimir" 
+                            TextColor="White" 
+                            Font="Bold"
+                            HeightRequest="60"
+                            HorizontalOptions="FillAndExpand"
+                            Image="ic_action_local_printshop" 
+                            Command="{Binding PrintCommand}"
+                            IsEnabled="{Binding IsEnable}">                            
+                        </Button>
+                    
                     <Button 
-                    BackgroundColor="#F05050"
-                    BorderRadius="23"
-                    Text="Terminar Viaje" 
-                    TextColor="White"  
-                    Font="Bold"
-                    HeightRequest="60"
-                    HorizontalOptions="FillAndExpand"
-                    Command="{Binding FinishCommand}">
+                            Grid.Row="2"
+                            BackgroundColor="#F05050"
+                            BorderRadius="23"
+                            Text="Alerta" 
+                            TextColor="White"  
+                            Font="Bold"
+                            Image="ic_action_add_alert"
+                            HorizontalOptions="FillAndExpand"
+                            IsVisible="{Binding IsVisibleAlert}"
+                            Command="{Binding Alerta}">
                     </Button>
-                    <Button 
-                    BackgroundColor="#00A14E" 
-                    BorderRadius="23"
-                    Text="Imprimir" 
-                    TextColor="White" 
-                    Font="Bold"
-                    HeightRequest="60"
-                    HorizontalOptions="FillAndExpand"
-                    Image="ic_action_local_printshop" 
-                    Command="{Binding PrintCommand}"
-                    IsEnabled="{Binding IsEnable}">
-                    </Button>
-                    <Button 
-                    BackgroundColor="#F05050"
-                    BorderRadius="23"
-                    Text="Alerta" 
-                    TextColor="White"  
-                    Font="Bold"
-                    Image="ic_action_add_alert"
-                    HeightRequest="60"
-                    HorizontalOptions="FillAndExpand"
-                    IsVisible="{Binding IsVisibleAlert}"
-                    Command="{Binding Alerta}">
-                    </Button>
+                    </Grid>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

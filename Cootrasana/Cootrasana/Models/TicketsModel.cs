@@ -14,7 +14,7 @@ namespace Cootrasana.Models
         public int idOrigen { get; set; }
         public int idDestino { get; set; }
         public int NoPersonas { get; set; }
-        public double ValTicket { get; set; }
+        public int ValTicket { get; set; }
         public bool Encomienda { get; set; }
         public bool Alert { get; set; }
         public string Hora { get; set; }

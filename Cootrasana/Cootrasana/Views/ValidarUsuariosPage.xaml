@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cootrasana.Views.ValidarUsuariosPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Valida Ticket">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView
+            BindingContext="{Binding Validar}">
+                <StackLayout
+                Margin="45,200">
+                    <Entry 
+                        Grid.Column="1"
+                        Placeholder="Número Ticket"
+                        Keyboard="Numeric"
+                        Text="{Binding NoTicket}">
+                        </Entry>
+                        <Button 
+                        Margin="0,20"
+                        BackgroundColor="#00A14E" 
+                        BorderRadius="23"
+                        Text="Validar" 
+                        TextColor="White" 
+                        Font="Bold"
+                        HeightRequest="60"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding EnviarCommand}">  
+                    </Button>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -7,7 +7,8 @@
     <ContentPage.Content>
         <ScrollView
             BindingContext="{Binding Viajes}">
-            <StackLayout>
+            <StackLayout
+                Margin="45,200">
                 <Picker
                 ItemDisplayBinding="{Binding nombre}"
                 ItemsSource="{Binding Viajespick}"
@@ -15,6 +16,7 @@
                 Title="Viajes">
                 </Picker>
                 <Button 
+                Margin="0,20"
                 BackgroundColor="#00A14E" 
                 BorderRadius="23"
                 Text="Enviar" 

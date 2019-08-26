@@ -24,6 +24,8 @@ namespace Cootrasana.ViewModel
         private IntermediosDataBase intermediosModel;
         private UbicacionesModel Ubicaciones;
         private UbicacionesDataBase UbicacionesData;
+        private UsuariosViajeModel UsuariosViaje;
+        private UsuariosViajeDataBase UsuariosViajeModel;
         private ObservableCollection<ViajesModel> viajespick;
         private ViajesModel viajes;
         private int idusuario;
@@ -52,6 +54,7 @@ namespace Cootrasana.ViewModel
         public List<GeneralModel> MyViajes { get; set; }
         public List<ViajesModel> MyIntermedios { get; set; }
         public List<UbicacionesModel> MyUbicaciones { get; set; }
+        public List<UsuariosViajeModel> MyUsuario { get; set; }
 
         #endregion
 
@@ -59,15 +62,16 @@ namespace Cootrasana.ViewModel
 
         public ViajesViewModel()
         {
+            
             this.apiService = new ApiService();
             this.IsEnable = true;
-            this.LoadViaje();
+            this.LoadViaje();            
         }
         #endregion
 
         #region Command
         public async void LoadViaje()
-        {
+        {            
             LoginModel = new LoginDataBase();
             viajesModel = new ViajesDataBase();
             viajes = new ViajesModel();
@@ -166,6 +170,7 @@ namespace Cootrasana.ViewModel
             var consul = viajesModel.GetOneMembers(this.Viajes.id);
 
             this.LlenarUbicaciones(Load.id);
+            this.LlenarUsuariosViaje(Load.id);
 
             if (MyIntermedios != null)
             {
@@ -200,6 +205,46 @@ namespace Cootrasana.ViewModel
             MainViewModel.GetInstance().Tickets = new TicketsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new TicketsPage());
             this.IsEnable = true;
+        }
+
+        private async void LlenarUsuariosViaje(int id)
+        {
+            this.UsuariosViaje = new UsuariosViajeModel();
+            this.UsuariosViajeModel = new UsuariosViajeDataBase();
+
+            var LoadUsuarios = new UsuariosViajeModel
+            {
+                id = id
+            };
+
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+            var controller = Application.Current.Resources["UrlUsuariosViaje"].ToString();
+            var response = await this.apiService.Post<UsuariosViajeModel>(url, prefix, controller, LoadUsuarios);
+
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Esta ruta no posee usuarios, comuniquese con el administrador", "Aceptar");
+                return;
+            }
+
+            this.MyUsuario = (List<UsuariosViajeModel>)response.Result;
+
+            if (MyUsuario != null)
+            {
+                UsuariosViajeModel.DeleteTable();
+            }
+
+            foreach (var item in MyUsuario)
+            {
+                UsuariosViaje.id = item.ticket;
+                UsuariosViaje.nombres = item.nombres;
+                UsuariosViaje.apellidos = item.apellidos;
+                UsuariosViaje.documento = item.documento;
+                UsuariosViaje.ticket = item.ticket;
+                UsuariosViaje.Puesto = item.Puesto;
+                UsuariosViajeModel.AddMember(UsuariosViaje);
+            }
         }
 
         private async void LlenarUbicaciones(int id)

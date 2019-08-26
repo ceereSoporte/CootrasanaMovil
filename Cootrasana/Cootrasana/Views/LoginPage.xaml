@@ -68,7 +68,11 @@
                         Text="Ingresar"
                         TextColor="White">
                     </Button>
-                </StackLayout>                
+                </StackLayout>
+                <ActivityIndicator
+                    IsRunning="{Binding IsRunning}"
+                    VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

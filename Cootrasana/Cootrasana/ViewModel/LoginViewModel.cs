@@ -6,6 +6,7 @@ namespace Cootrasana.ViewModel
     using Cootrasana.Services;
     using Cootrasana.Views;
     using GalaSoft.MvvmLight.Command;
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace Cootrasana.ViewModel
         //private UsuariosDataBase UserModel;
         private ApiService apiService;
         public bool isEnable;
+        private bool isRunning;
 
         #endregion
 
@@ -29,10 +31,17 @@ namespace Cootrasana.ViewModel
         public string Usuario { get; set; }
         public string Clave { get; set; }
         public List<LoginModel> MyLogin { get; set; }
+
         public bool IsEnable
         {
             get { return this.isEnable; }
             set { this.SetValue(ref this.isEnable, value); }
+        }
+
+        public bool IsRunning
+        {
+            get { return this.isRunning; }
+            set { this.SetValue(ref this.isRunning, value); }
         }
 
         #endregion
@@ -67,6 +76,7 @@ namespace Cootrasana.ViewModel
 
         private async void Login()
         {
+            this.IsRunning = true;
             var connection = await this.apiService.CheckConnection();
             if (!connection.IsSuccess)
             {
@@ -93,15 +103,12 @@ namespace Cootrasana.ViewModel
             {
                 await App.Current.MainPage.DisplayAlert("", "Usuario y/o contraseña incorrecta ", "Aceptar");
                 this.IsEnable = true;
+                this.IsRunning = false;
                 return;
             }
 
             var usuario = (LoginModel)response.Result;
 
-            if (usuario != null)
-            {
-                loginModel.DeleteTable();
-            }
             //Guardado del usurio cuando existe
             login.id = usuario.id;
             login.user = usuario.user;
@@ -109,12 +116,11 @@ namespace Cootrasana.ViewModel
             login.nombres = usuario.nombres;
             login.apellidos = usuario.apellidos;
             loginModel.AddMember(login);
-            
 
             MainViewModel.GetInstance().Viajes = new ViajesViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new ViajesPage());
             this.IsEnable = true;
-
+            this.IsRunning = false;
         }       
 
         #endregion

@@ -15,6 +15,8 @@ namespace Cootrasana.Views
 		public ViajesPage ()
 		{
 			InitializeComponent ();
-		}
+            NavigationPage.SetHasNavigationBar(this, false);
+        }
+
 	}
 }
