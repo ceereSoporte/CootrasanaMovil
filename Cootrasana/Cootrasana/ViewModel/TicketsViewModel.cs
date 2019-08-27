@@ -28,6 +28,7 @@ namespace Cootrasana.ViewModel
         private bool isToggled;
         private bool isEnableVal;
         private bool alerta;
+        private bool isRunning;
         private int noPersonas;
         private int valTicket;
         private string destino;
@@ -56,6 +57,12 @@ namespace Cootrasana.ViewModel
         #region Properties
 
         public string Mensaje { get; set; }
+
+        public bool IsRunning
+        {
+            get { return this.isRunning; }
+            set { this.SetValue(ref this.isRunning, value); }
+        }
 
         public IList<string> DeviceList
         {
@@ -379,7 +386,7 @@ namespace Cootrasana.ViewModel
                         Placa = item.Placa;
                     }
 
-                    Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Ticket Encomienda" + "\n\n" + "Fecha: " + DateTime.Now + "\n\n" + "Origen: " + Ubicaciones.nombre + "\n\n" + "Destino: " + Intermedios.destino + "\n\n" + "Bus: " + Bus + "\n\n" + "Placa: " + Placa + "\n\n" + "Valor: $" + ValTicket.ToString() + "\n\n" + "--------------------------------\n\n";
+                    Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Ticket Encomienda" + "\n\n" + "Fecha: " + DateTime.Now + "\n\n" + "Origen: " + Ubicaciones.nombre + "\n\n" + "Destino: " + Intermedios.destino + "\n\n" + "Bus: " + Bus + "\n\n" + "Placa: " + Placa + "\n\n" + "Valor: " + Valor + "\n\n" + "--------------------------------\n\n";
                     Imprimir(Mensaje);
                     Tickets.Origen = Ubicaciones.nombre;
                     Tickets.Destino = Intermedios.destino;
@@ -492,14 +499,14 @@ namespace Cootrasana.ViewModel
 
         private async void Finish()
         {
-
             var answer = await Application.Current.MainPage.DisplayAlert("Confirmación", "¿Desea terminar el viaje?", "Sí", "No");
             if (!answer)
             {
                 return;
             }
 
-
+            this.IsRunning = true;
+            
             TicketsModel = new TicketsDataBase();
             LoginModel = new LoginDataBase();
 
@@ -507,12 +514,11 @@ namespace Cootrasana.ViewModel
             if (!connection.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                this.IsRunning = false;
                 return;
             }
 
             var POS = TicketsModel.GetMembers();
-
-
 
             foreach (var item in POS)
             {
@@ -538,7 +544,9 @@ namespace Cootrasana.ViewModel
 
                 if (!response.IsSuccess)
                 {
-                    await App.Current.MainPage.DisplayAlert("El servicio esta malo", "", "Aceptar");
+                    await App.Current.MainPage.DisplayAlert("El servicio esta malo", "Comunicate con el administrador", "Aceptar");
+                    this.IsRunning = false;
+                    return;
                 }
             }
 
@@ -571,6 +579,8 @@ namespace Cootrasana.ViewModel
             await Application.Current.MainPage.Navigation.PopAsync();
             MainViewModel.GetInstance().Login = new LoginViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
+            this.IsRunning = false;
+
         }
 
         private void BindDeviceList()

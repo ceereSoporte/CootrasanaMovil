@@ -103,7 +103,7 @@
                 </Label>
                 <Entry
                     Keyboard="Numeric"
-                    Text="{Binding ValTicket, StringFormat='{0, 0:C0}'}"
+                    Text="{Binding ValTicket}"
                     IsEnabled="{Binding IsEnableVal}"
                     HorizontalOptions="FillAndExpand">
                 </Entry>
@@ -166,10 +166,15 @@
                             Image="ic_action_add_alert"
                             HorizontalOptions="FillAndExpand"
                             IsVisible="{Binding IsVisibleAlert}"
+                            IsEnabled="{Binding IsEnableAct}"
                             Command="{Binding Alerta}">
                     </Button>
                     </Grid>
                 </StackLayout>
+                <ActivityIndicator
+                    IsRunning="{Binding IsRunning}"
+                    VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
