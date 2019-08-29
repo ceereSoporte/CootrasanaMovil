@@ -20,7 +20,7 @@ namespace Cootrasana.ViewModel
         private TicketsModel Tickets;
         private LoginDataBase LoginModel;
         private LoginModel Login;
-        private bool isEnable;
+        private bool isEnableAct;
         private bool isVisible;
         private bool isVisibleAlert;
         private bool isVisibleOrigen;
@@ -190,10 +190,10 @@ namespace Cootrasana.ViewModel
             set { this.SetValue(ref this.noPersonas, value); }
         }
 
-        public bool IsEnable
+        public bool IsEnableAct
         {
-            get { return this.isEnable; }
-            set { this.SetValue(ref this.isEnable, value); }
+            get { return this.isEnableAct; }
+            set { this.SetValue(ref this.isEnableAct, value); }
         }
 
         public bool IsVisibleOrigen
@@ -268,7 +268,7 @@ namespace Cootrasana.ViewModel
 
         public TicketsViewModel()
         {
-            this.IsEnable = true;
+            this.IsEnableAct = true;
             this.IsEnableVal = true;
             this.IsToggled = false;
             this.AlertaTicket = false;
@@ -284,6 +284,7 @@ namespace Cootrasana.ViewModel
             this.UbicacionesModel = new UbicacionesDataBase();
             this.LoadIntermedios();
             blueToothService = DependencyService.Get<IBlueToothService>();
+            this.OrigenPickSgte = null;
             this.Posicion = 1;
             this.BindDeviceList();
 
@@ -506,7 +507,8 @@ namespace Cootrasana.ViewModel
             }
 
             this.IsRunning = true;
-            
+            this.IsEnableAct = false;
+
             TicketsModel = new TicketsDataBase();
             LoginModel = new LoginDataBase();
 
@@ -515,6 +517,7 @@ namespace Cootrasana.ViewModel
             {
                 await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
                 this.IsRunning = false;
+                this.IsEnableAct = true;
                 return;
             }
 
@@ -546,6 +549,7 @@ namespace Cootrasana.ViewModel
                 {
                     await App.Current.MainPage.DisplayAlert("El servicio esta malo", "Comunicate con el administrador", "Aceptar");
                     this.IsRunning = false;
+                    this.IsEnableAct = true;
                     return;
                 }
             }
@@ -580,7 +584,7 @@ namespace Cootrasana.ViewModel
             MainViewModel.GetInstance().Login = new LoginViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
             this.IsRunning = false;
-
+            this.IsEnableAct = true;
         }
 
         private void BindDeviceList()
@@ -603,6 +607,11 @@ namespace Cootrasana.ViewModel
         {
 
             UbicacionesModel = new UbicacionesDataBase();
+            if (Ubicaciones == null)
+            {
+                App.Current.MainPage.DisplayAlert("Error", "Debes selecciona un origen base", "Aceptar");
+                return;
+            }
             Posicion = Ubicaciones.posicion + 1;
             //var Sgte = OrigenPicket.Where(i => i.posicion == Posicion);
             OrigenPickSgte = new ObservableCollection<UbicacionesModel>(UbicacionesModel.GetMembers().Where(i => i.posicion == Posicion).OrderBy(i => i.nombre));
@@ -635,9 +644,14 @@ namespace Cootrasana.ViewModel
 
         private void AnteriorOrigen()
         {
-            IsVisibleOrigen = true;
-            IsVisibleOrigenPick = false;
+            if (Ubicaciones == null)
+            {
+                App.Current.MainPage.DisplayAlert("Error", "Debes selecciona un origen base", "Aceptar");
+                return;
+            }
+
             UbicacionesModel = new UbicacionesDataBase();
+
             Posicion = Ubicaciones.posicion - 1;
             //var Sgte = OrigenPicket.Where(i => i.posicion == Posicion);
             OrigenPickSgte = new ObservableCollection<UbicacionesModel>(UbicacionesModel.GetMembers().Where(i => i.posicion == Posicion).OrderBy(i => i.nombre));
@@ -647,6 +661,8 @@ namespace Cootrasana.ViewModel
                 return;
             }
 
+            IsVisibleOrigen = true;
+            IsVisibleOrigenPick = false;
             foreach (var item in OrigenPickSgte)
             {
                 Ubicaciones.id = item.id;

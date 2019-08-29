@@ -139,7 +139,8 @@
                             Font="Bold"
                             HeightRequest="60"
                             HorizontalOptions="FillAndExpand"
-                            Command="{Binding FinishCommand}">
+                            Command="{Binding FinishCommand}"
+                            IsEnabled="{Binding IsEnableAct}">
                         </Button>
                         <Button 
                             Grid.Column="1"
@@ -153,7 +154,7 @@
                             HorizontalOptions="FillAndExpand"
                             Image="ic_action_local_printshop" 
                             Command="{Binding PrintCommand}"
-                            IsEnabled="{Binding IsEnable}">                            
+                            IsEnabled="{Binding IsEnableAct}">                            
                         </Button>
                     
                     <Button 
