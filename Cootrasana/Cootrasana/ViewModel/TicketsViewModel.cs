@@ -29,6 +29,8 @@ namespace Cootrasana.ViewModel
         private bool isEnableVal;
         private bool alerta;
         private bool isRunning;
+        private bool tickPer;
+        private bool tickEnco;
         private int noPersonas;
         private int valTicket;
         private string destino;
@@ -140,7 +142,7 @@ namespace Cootrasana.ViewModel
             get { return this.origenPickSgte; }
             set { this.SetValue(ref this.origenPickSgte, value); }
         }
-        
+
 
         public ObservableCollection<UbicacionesModel> OrigenPicket
         {
@@ -225,42 +227,24 @@ namespace Cootrasana.ViewModel
             get { return this.alerta; }
             set { this.SetValue(ref this.alerta, value); }
         }
-
-        public bool IsToggled
-        {
-            get { return this.isToggled; }
-
-            set
-            {
-                isToggled = value;
-                if (isToggled == true)
-                {
-                    IsVisible = false;
-                    IsVisibleAlert = false;
-                    ValTicket = 0;
-                    NoPersonas = 0;
-                    IsEnableVal = true;
-                    AlertaTicket = false;
-                }
-                else if (isToggled == false)
-                {
-                    IsVisible = true;
-                    IsVisibleAlert = true;
-                    ValTicket = 0;
-                    NoPersonas = 1;
-                    IsEnableVal = false;
-                }
-                OnPropertyChanged(nameof(IsToggled));
-            }
-        }
-
+        
         public bool IsVisible
         {
             get { return this.isVisible; }
             set { this.SetValue(ref this.isVisible, value); }
         }
 
+        public bool TickPer
+        {
+            get { return this.tickPer; }
+            set { this.SetValue(ref this.tickPer, value); }
+        }
 
+        public bool TickEnco
+        {
+            get { return this.tickEnco; }
+            set { this.SetValue(ref this.tickEnco, value); }
+        }
 
         #endregion
 
@@ -270,15 +254,16 @@ namespace Cootrasana.ViewModel
         {
             this.IsEnableAct = true;
             this.IsEnableVal = true;
-            this.IsToggled = false;
             this.AlertaTicket = false;
             this.IsVisible = true;
             this.IsVisibleOrigen = false;
             this.IsVisibleOrigenPick = true;
             this.IsVisibleAlert = true;
+            this.TickPer = true;
+            this.TickEnco = false;
             this.NoPersonas = 1;
             this.ValTicket = val * NoPersonas;
-            
+
             this.apiService = new ApiService();
             this.IntermediosModel = new IntermediosDataBase();
             this.UbicacionesModel = new UbicacionesDataBase();
@@ -287,7 +272,6 @@ namespace Cootrasana.ViewModel
             this.OrigenPickSgte = null;
             this.Posicion = 1;
             this.BindDeviceList();
-
         }
 
         private void LoadIntermedios()
@@ -312,24 +296,29 @@ namespace Cootrasana.ViewModel
             Tickets = new TicketsModel();
             TicketsModel = new TicketsDataBase();
             var ViajeModel = new ViajesDataBase();
-
+            this.IsRunning = true;
+            this.IsEnableAct = false;
 
             var viaje = ViajeModel.GetMembers();
 
             if (selectedDevice == null)
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Debes de seleccionar una impresora", "Aceptar");
+                this.IsRunning = false;
+                this.IsEnableAct = true;
                 return;
             }
 
-            if (IsToggled == false)
+            if (TickEnco == false)
             {
-                if (Intermedios.destino == "" || Intermedios.origen == "" || NoPersonas <= 0)
+                if (Intermedios.destino == "" || Intermedios.origen == "" || ValTicket <= 0)
                 {
                     await App.Current.MainPage.DisplayAlert(
                     "Error",
                     "Debes llenar todos los campos",
                     "OK");
+                    this.IsRunning = false;
+                    this.IsEnableAct = true;
                 }
                 else
                 {
@@ -341,7 +330,7 @@ namespace Cootrasana.ViewModel
 
                     if (AlertaTicket)
                     {
-                        Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Ticket Persona(s) Alerta" + "\n\n" + "Fecha: " + DateTime.Now + "\n\n" + "Origen: " + Ubicaciones.nombre + "\n\n" + "Destino: " + Intermedios.destino + "\n\n" + "Bus: " + Bus + "\n\n" + "Placa: " + Placa + "\n\n"  + "No Persona(s): " + NoPersonas + "\n\n" + "--------------------------------\n\n";
+                        Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Ticket Persona(s) Alerta" + "\n\n" + "Fecha: " + DateTime.Now + "\n\n" + "Origen: " + Ubicaciones.nombre + "\n\n" + "Destino: " + Intermedios.destino + "\n\n" + "Bus: " + Bus + "\n\n" + "Placa: " + Placa + "\n\n" + "No Persona(s): " + NoPersonas + "\n\n" + "--------------------------------\n\n";
                     }
                     else
                     {
@@ -353,7 +342,7 @@ namespace Cootrasana.ViewModel
                     Tickets.ValTicket = ValTicket;
                     Tickets.NoPersonas = NoPersonas;
                     Tickets.Fecha = Fecha;
-                    Tickets.Encomienda = isToggled;
+                    Tickets.Encomienda = false;
                     Tickets.idDestino = Intermedios.idDestino;
                     Tickets.idOrigen = Ubicaciones.id;
                     foreach (var item in viaje)
@@ -367,6 +356,8 @@ namespace Cootrasana.ViewModel
                     TicketsModel.AddMember(Tickets);
                     ClearControll();
                     this.AlertaTicket = false;
+                    this.IsRunning = false;
+                    this.IsEnableAct = true;
                 }
             }
 
@@ -378,6 +369,8 @@ namespace Cootrasana.ViewModel
                     "Error",
                     "Debes llenar todos los campos",
                     "OK");
+                    this.IsRunning = false;
+                    this.IsEnableAct = true;
                 }
                 else
                 {
@@ -394,7 +387,7 @@ namespace Cootrasana.ViewModel
                     Tickets.ValTicket = ValTicket;
                     Tickets.Fecha = Fecha;
                     Tickets.NoPersonas = 0;
-                    Tickets.Encomienda = isToggled;
+                    Tickets.Encomienda = true;
                     Tickets.idDestino = Intermedios.idDestino;
                     Tickets.idOrigen = Ubicaciones.id;
                     foreach (var item in viaje)
@@ -406,6 +399,8 @@ namespace Cootrasana.ViewModel
                     TicketsModel.AddMember(Tickets);
                     ClearControll();
                     this.AlertaTicket = false;
+                    this.IsRunning = false;
+                    this.IsEnableAct = true;
                 }
 
             }
@@ -418,8 +413,7 @@ namespace Cootrasana.ViewModel
 
         public void ClearControll()
         {
-            NoPersonas = 0;
-            Intermedios.destino = "";
+            NoPersonas = 1;
             ValTicket = 0;
             AlertaTicket = false;
         }
@@ -570,14 +564,14 @@ namespace Cootrasana.ViewModel
             }
 
             int TotalInt = PersonasInt + EncomiendasInt;
-            string Total = string.Format("{0, 0:C0}",TotalInt);
+            string Total = string.Format("{0, 0:C0}", TotalInt);
             string Personas = string.Format("{0, 0:C0}", PersonasInt);
             string Encomiendas = string.Format("{0, 0:C0}", EncomiendasInt);
 
-            Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Debes Liquidar" + "\n\n" + "Por Personas: " + Personas + "\n\n" + "Por Encomiendas: " + Encomiendas + "\n\n" + "Total: " + Total + "\n\n" + "--------------------------------\n\n";
+            Mensaje = "             COOTRASANA" + "\n" + "  Cooperativa de Trasportadores" + "             San Antonio" + "\n\n" + "Debes Liquidar" + "\n\n" + "Fecha: " + DateTime.Now  + "\n\n" + "Por Personas: " + Personas + "\n\n" + "Por Encomiendas: " + Encomiendas + "\n\n" + "Total: " + Total + "\n\n" + "Peajes: " + "\n\n" + "Combustible: " + "\n\n" + "Viaticos: " + "\n\n" +"Otros: " + "\n\n" + "Total: " + "\n\n" + "--------------------------------\n\n";
             Imprimir(Mensaje);
-            await Application.Current.MainPage.DisplayAlert("Debes Liquidar", "Por personas: " + Personas + "\n" + "Por Encomienda: " + Encomiendas + "\n" + "Total: " + Total, "Aceptar");
-
+            await Application.Current.MainPage.DisplayAlert("Debes Liquidar", "Por personas: " +  Personas + "\n" + "Por Encomienda: " + Encomiendas + "\n" + "Total: " + Total, "Aceptar");
+            Imprimir(Mensaje);
             TicketsModel.DeleteTable();
             LoginModel.DeleteTable();
             await Application.Current.MainPage.Navigation.PopAsync();
@@ -620,7 +614,7 @@ namespace Cootrasana.ViewModel
                 App.Current.MainPage.DisplayAlert("Error", "Este es el último origen", "Aceptar");
                 return;
             }
-            
+
             foreach (var item in OrigenPickSgte)
             {
                 IsVisibleOrigen = true;
@@ -631,7 +625,7 @@ namespace Cootrasana.ViewModel
                 Origen = item.nombre;
                 Posicion = item.posicion;
                 this.DestinoPick = new ObservableCollection<IntermediosModel>(IntermediosModel.GetOneMembers(item.id).OrderBy(i => i.destino));
-            }            
+            }
         }
 
         public ICommand Anterior
@@ -672,7 +666,7 @@ namespace Cootrasana.ViewModel
                 Posicion = item.posicion;
                 this.DestinoPick = new ObservableCollection<IntermediosModel>(IntermediosModel.GetOneMembers(item.id).OrderBy(i => i.destino));
             }
-            
+
         }
 
         public ICommand ValidarTicket
@@ -689,6 +683,44 @@ namespace Cootrasana.ViewModel
             await Application.Current.MainPage.Navigation.PushAsync(new ValidarUsuariosPage());
         }
 
+        public ICommand Person
+        {
+            get
+            {
+                return new RelayCommand(TickPersona);
+            }
+        }
+
+        private void TickPersona()
+        {
+            IsVisible = false;
+            IsVisibleAlert = false;
+            ValTicket = 0;
+            NoPersonas = 0;
+            IsEnableVal = true;
+            AlertaTicket = false;
+            TickPer = false;
+            TickEnco = true;
+        }
+
+        public ICommand Encomienda
+        {
+            get
+            {
+                return new RelayCommand(TickEncomienda);
+            }
+        }
+
+        private void TickEncomienda()
+        {
+            IsVisible = true;
+            IsVisibleAlert = true;
+            ValTicket = 0;
+            NoPersonas = 1;
+            IsEnableVal = false;
+            TickPer = true;
+            TickEnco = false;
+        }
 
         #endregion
 

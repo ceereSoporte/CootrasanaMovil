@@ -8,29 +8,67 @@
         <ScrollView
             BindingContext="{Binding Tickets}">
             <StackLayout
-                    Padding="10">
+                    Padding="50">
                 <Button
-                    Command="{Binding ValidarTicket}"
+                    BackgroundColor="#00A14E" 
+                    BorderRadius="23"
+                    TextColor="White" 
+                    Font="Bold"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    Command="{Binding ValidarTicket}" 
                     Text="Validar Ticket">
                 </Button>
-                <Picker ItemsSource="{Binding DeviceList}"
-                    Title="Seleccione Impresora"
-                    ItemDisplayBinding="{Binding .}"
-                    SelectedItem="{Binding SelectedDevice}" />
-                <Grid HorizontalOptions="Center"
-                      VerticalOptions="Center">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Text="Encomienda"></Label>
-                    <Switch
-                       MinimumHeightRequest="5"
-                       MinimumWidthRequest="5"                   
-                       IsToggled="{Binding IsToggled}"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="#00A14E" 
+                        BorderRadius="23"
+                        TextColor="White" 
+                        Font="Bold"
+                        HeightRequest="60"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding Encomienda}" 
+                        IsVisible="{Binding TickEnco}"
+                        Text="Persona">
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        BackgroundColor="#00A14E" 
+                        BorderRadius="23"
+                        TextColor="White" 
+                        Font="Bold"
+                        HeightRequest="60"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding Person}"
+                        IsVisible="{Binding TickPer}"
+                        Text="Encomienda">
+                    </Button>
                 </Grid>
+                <Picker ItemsSource="{Binding DeviceList}"
+                    Title="Seleccione Impresora"
+                    ItemDisplayBinding="{Binding .}"
+                    SelectedItem="{Binding SelectedDevice}" />
+                <!--<Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        FontSize="20"
+                        Text="Encomienda" 
+                        HorizontalOptions="Start"/>
+                    <Switch
+                       AnchorX="100"
+                       AnchorY="100"
+                       HeightRequest="46"
+                       IsToggled="{Binding IsToggled}"
+                       HorizontalOptions="EndAndExpand"/>
+                </Grid>-->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -39,15 +77,15 @@
                     </Grid.ColumnDefinitions>
                     <Button 
                         Grid.Column="0"
-                        Image="ic_action_play_arrow"
+                        BorderRadius="23"
+                        Image="ic_keyboard_arrow_left"
                         Command="{Binding Anterior}"
                         BackgroundColor="#00A14E"/>
                     <Entry
                             Grid.Column="1"
                             Text="{Binding Origen}"
                             IsVisible="{Binding IsVisibleOrigen}"
-                            IsEnabled="False"
-                            Placeholder="# Personas">
+                            IsEnabled="False">
                     </Entry>
                     <Picker     
                         Grid.Column="1"
@@ -59,7 +97,8 @@
                     </Picker>
                     <Button 
                         Grid.Column="2"
-                        Image="ic_action_play_arrow"
+                        BorderRadius="23"
+                        Image="ic_keyboard_arrow_right"
                         Command="{Binding Siguiente}"
                         BackgroundColor="#00A14E"/>
                 </Grid>
@@ -70,6 +109,7 @@
                         Title="Destino">
                 </Picker>
                 <Label
+                    FontSize="20"
                     Text="Número de personas"
                     IsVisible="{Binding IsVisible}">
                 </Label>
@@ -82,6 +122,7 @@
                     </Grid.ColumnDefinitions>
                     <Button 
                         Grid.Column="0"
+                        BorderRadius="23"
                         Image="ic_action__"
                         BackgroundColor="#00A14E"
                         Command="{Binding RigthCommand}"/>
@@ -93,11 +134,13 @@
                     </Entry>
                     <Button 
                         Grid.Column="2"
+                        BorderRadius="23"
                         Image="ic_action_add_box"
                         BackgroundColor="#00A14E"
                         Command="{Binding LeftCommand}"/>
                 </Grid>
                 <Label
+                    FontSize="20"
                     Text="Valor del ticket"
                     HorizontalOptions="FillAndExpand">
                 </Label>
@@ -107,17 +150,12 @@
                     IsEnabled="{Binding IsEnableVal}"
                     HorizontalOptions="FillAndExpand">
                 </Entry>
-                <StackLayout
-                   Margin="20,0"
-                   Orientation="Horizontal"
-                   VerticalOptions="End">
+                <StackLayout>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="2*" />
                             <RowDefinition Height="2*" />
-                            <RowDefinition Height="2*" />
                         </Grid.RowDefinitions>
-
                         <!--<Button 
                         BackgroundColor="#F05050"
                         BorderRadius="23"
@@ -134,14 +172,16 @@
                             Grid.Row="0"
                             BackgroundColor="#F05050"
                             BorderRadius="23"
-                            Text="Terminar Viaje" 
+                            Text="Alerta" 
                             TextColor="White"  
                             Font="Bold"
                             HeightRequest="60"
+                            Image="ic_action_add_alert"
                             HorizontalOptions="FillAndExpand"
-                            Command="{Binding FinishCommand}"
-                            IsEnabled="{Binding IsEnableAct}">
-                        </Button>
+                            IsVisible="{Binding IsVisibleAlert}"
+                            IsEnabled="{Binding IsEnableAct}"
+                            Command="{Binding Alerta}">
+                        </Button>                        
                         <Button 
                             Grid.Column="1"
                             Grid.Row="0"
@@ -156,26 +196,25 @@
                             Command="{Binding PrintCommand}"
                             IsEnabled="{Binding IsEnableAct}">                            
                         </Button>
-                    
-                    <Button 
-                            Grid.Row="2"
-                            BackgroundColor="#F05050"
-                            BorderRadius="23"
-                            Text="Alerta" 
-                            TextColor="White"  
-                            Font="Bold"
-                            Image="ic_action_add_alert"
-                            HorizontalOptions="FillAndExpand"
-                            IsVisible="{Binding IsVisibleAlert}"
-                            IsEnabled="{Binding IsEnableAct}"
-                            Command="{Binding Alerta}">
-                    </Button>
                     </Grid>
                 </StackLayout>
+
                 <ActivityIndicator
                     IsRunning="{Binding IsRunning}"
                     VerticalOptions="CenterAndExpand">
                 </ActivityIndicator>
+                <Button 
+                    Grid.Row="2"
+                    BackgroundColor="#F05050"
+                    BorderRadius="23"
+                    Text="Terminar Viaje" 
+                    TextColor="White"  
+                    Font="Bold"
+                    HeightRequest="60"
+                    HorizontalOptions="FillAndExpand"
+                    Command="{Binding FinishCommand}"
+                    IsEnabled="{Binding IsEnableAct}">
+                </Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

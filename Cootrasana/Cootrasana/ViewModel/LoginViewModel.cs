@@ -77,14 +77,16 @@ namespace Cootrasana.ViewModel
         private async void Login()
         {
             this.IsRunning = true;
+            this.IsEnable = false;
             var connection = await this.apiService.CheckConnection();
             if (!connection.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Aceptar");
+                this.IsEnable = true;
+                this.IsRunning = false;
                 return;
             }
-
-            this.IsEnable = false;
+            
             var loginPOS = new LoginModel
             {
                 user = this.Usuario,

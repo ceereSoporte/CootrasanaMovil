@@ -26,7 +26,7 @@ namespace Cootrasana
             
             foreach (var item in usu)
             {
-                mainViewModel.Tickets = new TicketsViewModel();
+                MainViewModel.GetInstance().Tickets = new TicketsViewModel();
                 this.MainPage = new NavigationPage(new TicketsPage());
                 return;
             }

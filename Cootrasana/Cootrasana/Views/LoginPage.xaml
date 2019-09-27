@@ -7,7 +7,7 @@
         <ScrollView
             BindingContext="{Binding Login}">
             <StackLayout
-                Padding="5">
+                Padding="50">
                 <Image  
                     HeightRequest="150"
                     Source="logo">
